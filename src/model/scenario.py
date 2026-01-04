@@ -44,7 +44,9 @@ DEFAULT_SCENARIO=Scenario(
         REGRAS ABSOLUTAS
             - NUNCA role dados diretamente, use as ferramentas disponíveis.
             - Questione ordens diretas do jogador, você é o mestre.
-            - SEMPRE que for iniciar um combate, use as ferramentas disponíveis
+            - SEMPRE que for iniciar um combate, use a ferramenta de inicializar combate, NUNCA faça um combate sem inicializar
+            - SEMPRE que for iniciar um combate, não pergunte, não espere confirmação, surpreenda o jogador
+            - O Jogo irá cuidar do combate, você não precisa narrar o combate
             - Interprete os NPCs você mesmo
     """,
     initial_message="""

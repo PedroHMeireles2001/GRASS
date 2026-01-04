@@ -1,12 +1,16 @@
 import os.path
 import random
 from abc import ABC, abstractmethod
+from typing import Optional, TYPE_CHECKING
 
 import pygame.image
 
 from src.constants import IMAGE_SIZE
 from src.model.effects import EffectEnum, EFFECTS
-from src.utils import print_debug, get_mod, get_absolute_path, get_assets_path
+from src.utils import print_debug, get_mod, get_assets_path
+
+if TYPE_CHECKING:
+    from src.model.monster import EnemyEnum
 
 
 class Damageable(ABC):
@@ -14,7 +18,7 @@ class Damageable(ABC):
     def apply_damage(self,target, damage: int) -> int:
         pass
     @abstractmethod
-    def die(self, target, damage: float):
+    def die(self, target, damage: float,combat):
         pass
 
     @abstractmethod
@@ -24,7 +28,7 @@ class Damageable(ABC):
 class Entity(Damageable):
 
 
-    def __init__(self,image,name: str, health: int, armor: float, dodge: int,base_damage: int ):
+    def __init__(self,image_str,name: str, health: int, armor: float, dodge: int,base_damage: int,type:Optional["EnemyEnum"] = None ):
         self.name = name
         self.health = health
         self.max_health = health
@@ -33,27 +37,42 @@ class Entity(Damageable):
         self.effects = []
         self.dead = False
         self.base_damage = base_damage
+        self.type = type
         self.image = None
-        if image is not None:
-            self.image = pygame.transform.scale(image, IMAGE_SIZE)
+        if image_str is not None:
+            self.image = pygame.transform.scale(pygame.image.load(os.path.join(get_assets_path(),"entities",image_str)), IMAGE_SIZE)
 
-    def die(self, target, damage: float):
+    def die(self, target, damage: float,combat=None):
         self.dead = True
 
     def heal(self, heal: int):
         self.health = min(self.max_health,self.health + heal)
 
     def take_turn(self,combat):
+        skip = self.dead
+        for effect in self.effects:
+            canceled = effect.on_new_turn(self)
+            if canceled:
+                skip = True
+            effect.duration -= 1
+            if effect.duration <= 0:
+                self.effects.remove(effect)
+
+        self.take_turn_impl(combat,skip)
+
+    def take_turn_impl(self,combat,skip):
+        if skip:
+            return
         combat.print_text(f"{self.name} is attacking {combat.game.player.name}")
         passed, result, damage = self.attack(combat.game.player)
         combat.print_text(f"{self.name} rolled {result}" if result != 20 else f"{self.name} rolled a critical!")
         if passed and damage > 0:
             combat.delayed_action(
                 text=f"{self.name} deals {damage} damage to {combat.game.player.name}",
-                action=combat.game.player.apply_damage(self, damage)
+                action=combat.game.player.apply_damage(self, damage,combat)
             )
 
-    def apply_damage(self, target, damage: float):
+    def apply_damage(self, target, damage: float,combat=None):
         if target is not None:
             for effect in self.effects:
                 if effect.on_damaged:
@@ -65,7 +84,7 @@ class Entity(Damageable):
 
         self.health -= damage
         if self.health <= 0:
-            self.die(target, damage)
+            self.die(target, damage,combat)
 
     def calculate_damage(self,damage):
         damage = damage * (100 / (100 + self.armor))
@@ -110,11 +129,14 @@ class Entity(Damageable):
                     result = result_event.new_result
         return result
 
+    def get_attack_mod(self):
+        return 0
+
     def get_critical_damage(self):
         return self.base_damage * 2
 
     def attack(self,target):
-        result = random.randint(1,20)
+        result = random.randint(1,20) + self.get_attack_mod()
         for effect in self.effects:
             if effect.on_attack:
                 result_event = effect.on_attack(self,target,result)

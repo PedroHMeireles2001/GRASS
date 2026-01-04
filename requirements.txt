@@ -5,6 +5,7 @@ numpy
 pyperclip
 langchain
 langchain-core
+pyinstaller
 langchain-classic
 langchain-community
 langchain-openai

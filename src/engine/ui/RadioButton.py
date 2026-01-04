@@ -81,30 +81,56 @@ class RadioButtonGroup(UIElement):
         self.clear()
         self.radio_buttons = self._initialize_radio_buttons(options)
 
-
-    def update(self,event: pygame.event.Event,mouse_position: Tuple[int, int]):
+    def update(self, event: pygame.event.Event, mouse_position: Tuple[int, int]):
         if not self.enabled:
             return
+
         if event and event.type == pygame.MOUSEBUTTONDOWN:
             radio_button = self._get_clicked_radio_button(mouse_position)
+
             if not radio_button:
                 return
-            previous_selected = radio_button.selected
+
+            # 1. Resolver o valor 'previous' antes de alterar qualquer coisa
+            # Se for lista, precisamos de uma cópia rasa (copy) para não alterar a referência
+            if isinstance(self.selected_value, list):
+                previous = self.selected_value.copy()
+            else:
+                previous = self.selected_value
+
+            # Lógica para SINGLE SELECT
             if not self._is_multiselect():
-                self.clear()
-            radio_button.selected = not previous_selected
-            previous = self.selected_value
-            if not self._is_multiselect() and radio_button.selected:
-                self.selected_value = radio_button.value
-            elif self._is_multiselect() and radio_button.selected:
+                # Em Radio Buttons padrão, clicar no que já está selecionado não faz nada
+                if radio_button.selected:
+                    radio_button.selected = False
+                    self.selected_value = None
+                else:
+                    self.clear()
+                    radio_button.selected = True
+                    self.selected_value = radio_button.value
+
+            # Lógica para MULTI SELECT
+            else:
                 if self.selected_value is None:
                     self.selected_value = []
-                if len(self.selected_value) < self.multiselect:
-                    self.selected_value.append(radio_button.value)
-            elif self._is_multiselect() and not radio_button.selected:
-                self.selected_value.remove(radio_button.value)
 
-            self._on_change(previous, radio_button)
+                # Se já está selecionado, vamos remover (desmarcar)
+                if radio_button.selected:
+                    radio_button.selected = False
+                    if radio_button.value in self.selected_value:
+                        self.selected_value.remove(radio_button.value)
+
+                # Se não está selecionado, verificamos o limite ANTES de marcar
+                else:
+                    if len(self.selected_value) < self.multiselect:
+                        radio_button.selected = True
+                        self.selected_value.append(radio_button.value)
+                    else:
+                        return
+
+            # Só chama o callback se houve mudança real
+            if previous != self.selected_value:
+                self._on_change(previous, radio_button)
 
 
 

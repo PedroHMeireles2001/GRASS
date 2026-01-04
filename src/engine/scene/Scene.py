@@ -40,6 +40,7 @@ class Scene(ABC):
         for element in self.elements:
             element.update(event, mouse_position)
 
+
     def update(self):
         mouse_position = pygame.mouse.get_pos()
         for element in self.elements:

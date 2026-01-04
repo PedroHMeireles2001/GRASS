@@ -3,7 +3,6 @@ from typing import List, TYPE_CHECKING, Optional
 
 from src.constants import START_SKILLS
 from src.engine.scene.ChatScene import ChatScene
-from src.engine.scene.CombatScene import CombatScene
 from src.engine.scene.Scene import Scene
 from src.engine.scene.SceneElement import SceneElement
 from src.engine.ui.Button import Button
@@ -11,10 +10,8 @@ from src.engine.ui.ImageTransformStrategy import ColorInverter
 from src.engine.ui.RadioButton import RadioButtonGroup
 from src.engine.ui.SimpleText import SimpleText
 from src.engine.ui.TextInput import TextInput
-from src.model.attribs import CharacterAttrib
+from src.model.attribs import CharacterAttrib, CharacterExpertise
 from src.model.classes import CharacterClass
-from src.model.combat import Combat
-from src.model.entity import Entity
 from src.model.player import Player
 from src.model.race import CharacterRace
 from src.model.skills import SkillEnum, SKILL_FACTORY
@@ -33,16 +30,42 @@ class CharacterCreator(Scene):
         self.skill_len = START_SKILLS if len(self.avaliable_skills) >= START_SKILLS else len(self.avaliable_skills)
         self.skills_radio_button: RadioButtonGroup = RadioButtonGroup(label_str=f"Select {str(self.skill_len)} skill(s)",multiselect=self.skill_len,position=(240,90),options=[],on_change=self._set_selected_skills)
         self.selected_skills = []
+        self.selected_expertises = []
         self.error: Optional[SimpleText] = None
         self.selected_name = self._gerar_nome(random.randint(6,8),bool(random.randint(0,1)))
+        self.re_rolls = 3
+
+        self.attrib_radio_button = self._build_scene_attribs(screen)
+        self.reroll_button = Button(
+            image=None,
+            position=(24,24),
+            background_color=(255,255,255),
+            text=SimpleText(text="Reroll (3)",text_color=(0,0,0),position=(0,0),size=24),
+            hover_transform_strategy=ColorInverter(),
+            click_function=self._reroll
+        )
         super().__init__(background, screen, game)
+
+    def _reroll(self):
+        if self.re_rolls <= 0:
+            return
+        self.re_rolls -= 1
+        self.rolled_atribs = self._roll_attribs()
+        self.reroll_button.text.change_text(f"Reroll ({self.re_rolls})")
+        self.reroll_button.update_image()
+        for i,radio_button_group in enumerate(self.attrib_radio_button):
+            value = self.rolled_atribs[i]
+            radio_button_group.set_text(str(value))
+            radio_button_group.on_change = lambda p,x, val=value: self._set_selected_attribs(p,x, val)
+
 
     def _play(self):
         if not self._validate():
             return
-        player = Player(self.selected_name,self.selected_class,self.selected_race,self.selected_attribs,self.selected_skills)
+        player = Player(self.selected_name,self.selected_class,self.selected_race,self.selected_attribs,self.selected_skills,self.selected_expertises)
         self.game.player = player
         self.game.change_scene(ChatScene(self.screen,self.game,self.game.scenario))
+
 
     def _validate(self) -> bool:
         if not self.selected_race:
@@ -59,13 +82,15 @@ class CharacterCreator(Scene):
             return False
         if len(self.selected_attribs) != len(CharacterAttrib):
             self._update_error("You must select all attributes")
-            print(self.selected_attribs)
             return False
         if not self.selected_name:
             self._update_error("You must select a name")
             return False
         if self.selected_name.replace(" ","") == "":
             self._update_error("You must select a name")
+            return False
+        if len(self.selected_expertises) != 4:
+            self._update_error("You must select at least 4 expertises")
             return False
 
         return True
@@ -118,6 +143,13 @@ class CharacterCreator(Scene):
             SimpleText("Character Creator", 48, (get_center_x(self.screen, get_default_font(48).size("Character Creator")[0]), 0)),
             RadioButtonGroup(label_str="Select Race",position=(12,90),on_change=self._set_selected_race,options=[(race.value,race) for race in CharacterRace]),
             RadioButtonGroup(label_str="Select Class",position=(12,self.screen.get_height()//2),on_change=self._set_selected_class,options=[(clazz.value,clazz) for clazz in CharacterClass]),
+            RadioButtonGroup(
+                label_str="Select 4 Expertises",
+                position=(220,(self.screen.get_height()//2)),
+                options=[(expertise.value, expertise) for expertise in CharacterExpertise],
+                multiselect=4,
+                on_change=self._change_expertise
+            ),
             Button(
                 image=None,
                 text=SimpleText(text="Create!",size=24,position=(0,0),text_color=(0,0,0)),
@@ -134,9 +166,13 @@ class CharacterCreator(Scene):
                 on_change=self._set_selected_name,
                 label_top=False
             )
-        ] + [self.skills_radio_button] + self._build_scene_attribs()
+        ] + [self.skills_radio_button,self.reroll_button] + self.attrib_radio_button
 
-    def _build_scene_attribs(self):
+
+    def _change_expertise(self,previous,actual):
+        self.selected_expertises = actual
+
+    def _build_scene_attribs(self,screen):
         item_width = 200
         item_height = 300
         h_spacing = 4
@@ -149,7 +185,7 @@ class CharacterCreator(Scene):
         )
         start_y = self.skills_radio_button.position[1]
 
-        available_width = self.screen.get_width() - start_x
+        available_width = screen.get_width() - start_x
         columns = max(1, available_width // (item_width + h_spacing))
 
         return [

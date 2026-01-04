@@ -10,11 +10,19 @@ from src.utils import print_debug
 class EffectEnum(str, Enum):
     AIMING = "aiming"
     RECKLESS = "reckless"
+    STUNNED = "stunned"
+
+class CancellableEvent(BaseModel):
+    cancelled: bool = True
+
+class OnNewTurnResult(CancellableEvent):
+    pass
 
 class EventResult(BaseModel):
     new_result: int
 
-class OnAttackEvent(EventResult):
+class OnAttackEvent(BaseModel):
+    new_result: int
     cancelled: bool = False
 
 
@@ -25,12 +33,14 @@ class Effect(BaseModel):
     duration: int = 1
     positive: bool
     stackable: bool = True
+    skip_turn: bool = False
 
     on_apply: Optional[Callable[[object], None]] = None
     on_unapply: Optional[Callable[[object], None]] = None
     on_attack: Optional[Callable[[object,object,int], OnAttackEvent]] = None
     on_attacked: Optional[Callable[[object,bool,int], OnAttackEvent]] = None
     on_damaged: Optional[Callable[[object,int], OnAttackEvent]] = None
+    on_new_turn: Optional[Callable[[object], OnNewTurnResult]] = None
 
     class Config:
         arbitrary_types_allowed = True
@@ -52,7 +62,8 @@ def desavantage(_, __, result) -> OnAttackEvent:
 
     return OnAttackEvent(new_result=new_result)
 
-
+def skip(_):
+    return OnNewTurnResult(cancelled=True)
 
 
 
@@ -68,9 +79,16 @@ EFFECTS = {
         name="RECKLESS",
         description="Reckless",
         duration=1,
-        positive=False,
+        positive=True,
         on_attacked=advantage,
         on_attack=advantage
+    ),
+    EffectEnum.STUNNED: Effect(
+        name="STUNNED",
+        description="Skips x turns",
+        positive=False,
+        duration=1,
+        on_new_turn=skip
     )
 }
 

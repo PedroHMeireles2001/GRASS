@@ -26,5 +26,9 @@ INITIAL_LIFE = {
     CharacterClass.BARBARIAN: 120,
 }
 
+INITIAL_WEAPON = {
+
+}
+
 def get_initial_life(clazz,const) -> int:
     return INITIAL_LIFE[clazz] + (get_mod(const) * 10)

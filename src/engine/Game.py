@@ -1,20 +1,20 @@
 import json
 import os
 import sys
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, TYPE_CHECKING
 
 import pygame
 
 from src.engine.ai.chat import Chat
-from src.engine.scene.SceneFactory import SceneFactory
+from src.engine.scene.MainMenu import MainMenu
 from src.model.player import Player
 from src.model.scenario import Scenario
 
 
 class Game:
-    def __init__(self,scenario:Scenario,start_player=None,start_scene:SceneFactory=None):
+    def __init__(self,scenario:Scenario,start_player=None):
         self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
-        self.scene = start_scene.construct(self)
+        self.scene = None
         self.scenario = scenario
         self.previous_scene = None
         self.running = True
@@ -26,8 +26,9 @@ class Game:
             system_prompt=scenario.system_prompt,
             initial_message=scenario.initial_message,
             api_key=self.options["api_key"],
+            gpt_model=self.options["gpt_model"],
             game=self
-        )
+        ) if self.options["api_key"] else None
 
     def change_scene(self,new_scene):
         self.previous_scene = self.scene
@@ -41,8 +42,12 @@ class Game:
         if os.path.exists("options.json"):
             with open("options.json", "r") as file:
                 return json.load(file)
+        return self._get_default_options()
+
+    def _get_default_options(self):
         return {
-            "api_key": os.environ["debug_api_key"]
+            "api_key": os.environ["debug_api_key"],
+            "gpt_model" : "gpt-4o-mini"
         }
 
     def start(self):
@@ -61,6 +66,9 @@ class Game:
 
         pygame.quit()
         sys.exit()
+
+    def main_menu(self):
+        self.scene = MainMenu(None,self.screen,self)
 
     def back_scene(self):
         actual_scene = self.scene

@@ -4,7 +4,7 @@ import pygame
 
 from src.engine.ui.SimpleText import SimpleText
 from src.engine.ui.UIElement import UIElement
-from src.utils import get_default_font
+from src.utils import get_default_font, typewriter_sound
 
 
 class TextInput(UIElement):
@@ -33,6 +33,7 @@ class TextInput(UIElement):
             )
 
     def _on_change(self):
+        typewriter_sound()
         if self.on_change:
             self.on_change(self.text.text)
 

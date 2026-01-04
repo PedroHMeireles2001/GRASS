@@ -1,24 +1,38 @@
-from typing import Callable, Optional
-
-
+from typing import Callable, Optional, List
 
 import time
+
+from pydantic import BaseModel
+
+from src.model.entity import Entity
+from src.model.monster import EnemyEnum
+
+
+class CombatResult(BaseModel):
+    victory:bool
+    player_flee:bool
+    kills:int
+    enemies_flee: List[EnemyEnum]
+    enemies: List[EnemyEnum]
 
 class Combat:
     TURN_DELAY = 1.0  # segundos
 
-    def __init__(self, game, enemies):
+    def __init__(self, game, enemies,fleeable):
         self.game = game
-        self.enemies = enemies
+        self.enemies: List[Entity] = enemies
+        self.fleeable = fleeable
         self.turn_order = self._iniciative()
         self.turn_index = 0
-
+        self.flee_prep = False
+        self.flee = False
         self.running = True
-        self.victory = False
         self.is_player_turn = False
-
+        self.result = None
         self.last_turn_time = time.time()
         self.log = []
+        self.enemies_flee = []
+
 
         self.action_queue: list[TimedAction] = []
         self.current_action: TimedAction | None = None
@@ -97,11 +111,12 @@ class Combat:
                 )
             )
 
-    def _end(self,victory: bool):
+    def _end(self,victory: bool,flee=False):
         self.action_queue.clear()
-        self.victory = victory
+        self.result = CombatResult(player_flee=flee,victory=victory,enemies_flee=self.enemies_flee,enemies=[enemy.type for enemy in self.enemies],kills=len([enemy for enemy in self.enemies if enemy.dead]))
         self.running = False
-        self.game.chat.submit(f"event:combat_ended\nVictory:{str(self.victory)}\nFlee:{str(False)}")
+        self.game.back_scene()
+        self.game.scene.end_combat()
 
     def _process_turn(self):
         active = self.get_active_entity()
@@ -140,8 +155,14 @@ class Combat:
 
         return turn_order
 
-    def flee(self):
-        pass
+    def flee_player(self):
+        if not self.fleeable:
+            return
+        if self.flee_prep:
+            self._end(False,False)
+        self.print_text("You get ready to flee")
+        self.flee_prep = True
+        self.end_player_turn()
 
     def get_alives_enemies(self):
         return [e for e in self.enemies if not e.dead]

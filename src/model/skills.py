@@ -14,9 +14,10 @@ class Skill(BaseModel):
     cost: int
     classes: List[CharacterClass]
     description: str
-    is_combat: bool
+    is_combat: bool = True
     is_targeted: bool = False
     skip_turn: bool = True
+    passive: bool = False
     execute: Optional[Callable[[Entity],None]] = None
 
 class SkillEnum(str, Enum):

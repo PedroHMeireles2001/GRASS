@@ -1,9 +1,14 @@
+import random
 import threading
 from typing import Dict, Any
+from uuid import UUID
 
+import numpy as np
+import pygame
 from langchain_classic.agents import create_openai_tools_agent, AgentExecutor
 from langchain_classic.memory import ConversationBufferMemory
 from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain_core.outputs import LLMResult
 
 from src.constants import DEBUG
 from src.engine.ai.tools import PlayerToolkit
@@ -14,26 +19,29 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage
 
+from src.utils import typewriter_sound
+
+
 # Callback para capturar os tokens e jogar na Fila
 class TokenQueueHandler(BaseCallbackHandler):
-    def __init__(self, token_queue):
-        self.token_queue = token_queue
+    def __init__(self, chat):
+        self.chat = chat
 
     def on_llm_new_token(self, token: str, **kwargs) -> None:
-        # Envia o token de texto normal
-        self.token_queue.put(token)
+        self.chat.token_queue.put(token)
 
     def on_tool_start(self, serialized: Dict[str, Any], input_str: str, **kwargs) -> None:
-        # Quando o agente decide usar uma ferramenta, enviamos um aviso formatado
-        tool_name = serialized.get('name')
-        # Você pode formatar isso como quiser, talvez entre colchetes ou itálico
         if DEBUG:
-            self.token_queue.put(f"\n*[Sistema: Executando {tool_name}...]*\n")
+            tool_name = serialized.get('name')
+            self.chat.token_queue.put(f"\n*[Sistema: Executando {tool_name}...]*\n")
 
 class Chat:
-    def __init__(self, api_key, system_prompt, initial_message, game):
+
+
+    def __init__(self, gpt_model,api_key, system_prompt, initial_message, game):
         self.game = game
         self.player_toolkit = PlayerToolkit(game)
+        self.token_queue = queue.Queue()
 
         prompt = ChatPromptTemplate.from_messages([
             ("system", system_prompt),
@@ -45,7 +53,7 @@ class Chat:
         # Note que removemos o callback fixo aqui para injetá-lo dinamicamente no submit,
         # mas mantivemos streaming=True
         llm = ChatOpenAI(
-            model="gpt-4o-mini",
+            model=gpt_model,
             temperature=1,
             api_key=api_key,
             streaming=True
@@ -53,7 +61,7 @@ class Chat:
 
         initial_history = ChatMessageHistory(
             messages=[
-                HumanMessage(f"Player\n{self.game.player.to_markdown() if self.game.player else 'Default'}"),
+                HumanMessage(f"Player\n{self.game.player.to_text() if self.game.player else 'Default'}"),
                 AIMessage(initial_message)
             ]
         )
@@ -72,32 +80,25 @@ class Chat:
             verbose=True
         )
 
+    def is_generating(self):
+        return not self.token_queue.empty()
+
     def submit(self, text):
-        token_queue = queue.Queue()
-        stream_handler = TokenQueueHandler(token_queue)
+        if self.is_generating():
+            return
+
+        stream_handler = TokenQueueHandler(self)
 
         def run_agent():
             try:
-                run_config = RunnableConfig(
-                    callbacks=[stream_handler]
-                )
-                self.agent_executor.invoke(
-                    {"input": text},
-                    config=run_config
-                )
+                config = RunnableConfig(callbacks=[stream_handler])
+                self.agent_executor.invoke({"input": text}, config=config)
+
             except Exception as e:
-                print(f"Erro na thread do agente: {e}")
-                token_queue.put(f"\n[Erro: {str(e)}]")
-            finally:
-                token_queue.put(None)
+                self.token_queue.put(f"[Erro: {e}]")
 
-        thread = threading.Thread(target=run_agent)
-        thread.start()
+        threading.Thread(target=run_agent, daemon=True).start()
 
-        while True:
-            token = token_queue.get()
-            if token is None:
-                break
-            yield token
 
-        thread.join()
+
+

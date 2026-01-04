@@ -1,6 +1,6 @@
 from enum import Enum
 
-from src.model.player import CharacterAttrib
+from src.model.attribs import CharacterAttrib
 
 
 class CharacterRace(str, Enum):

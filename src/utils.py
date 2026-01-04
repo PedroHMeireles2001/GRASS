@@ -1,21 +1,25 @@
 import os
+import random
 import sys
 from typing import AnyStr
 
+import numpy as np
 import pygame
 
 from src.constants import DEBUG
 
-def get_absolute_path() -> AnyStr:
-    application_path = ""
-    if getattr(sys, 'frozen', False):
-        application_path = os.path.dirname(sys.executable)
-    elif __file__:
-        application_path = os.path.dirname(__file__)
-    return application_path
+
 
 def get_assets_path() -> AnyStr:
-    return os.path.join(get_absolute_path(), "assets")
+    # PyInstaller
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, "assets")
+
+    # DEV: caminho baseado no arquivo principal, não no cwd
+    main_file = sys.modules["__main__"].__file__
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(main_file)))
+
+    return os.path.join(project_root, "assets")
 
 def get_default_font(size:int) -> pygame.font.Font:
     return pygame.font.Font(os.path.join(get_assets_path(), "font.ttf"), size)
@@ -60,3 +64,24 @@ def grid_position(
     y = start_y + row * (item_height + v_spacing)
 
     return x, y
+
+def typewriter_sound():
+    SAMPLE_RATE = 44100
+    TYPE_VOLUME = 0.4
+
+    duration = random.uniform(0.01, 0.03)
+    samples = int(SAMPLE_RATE * duration)
+
+    # ruído branco
+    noise = np.random.uniform(-1, 1, samples)
+
+    # envelope de ataque rápido
+    envelope = np.linspace(1, 0, samples)
+
+    sound = noise * envelope
+    sound = (sound * 32767 * TYPE_VOLUME).astype(np.int16)
+    sound_stereo = np.column_stack((sound, sound))
+    pygame.sndarray.make_sound(sound_stereo).play()
+
+if __name__ == "__main__":
+    print(get_assets_path())
