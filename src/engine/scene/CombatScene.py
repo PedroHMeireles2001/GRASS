@@ -170,11 +170,11 @@ class CombatScene(Scene):
 
     def _player_attack(self):
         passed, result, damage = self.game.player.attack(self.target)
-        self.combat.print_text(f"You rolled {result} {"(success!)" if passed else "(miss!)"}" if result != 20 else f"You rolled critted")
+        self.combat.print_text(f"You rolled {result} {"(success!)" if passed else "(miss!)"}" if result != 20 else f"You rolled a crit!")
         if passed and damage > 0:
             self.combat.delayed_action(
                 text=f"You deal {damage} damage to {self.target.name}",
-                action=lambda: self.target.apply_damage(self.target,damage),
+                action=lambda: self.target.apply_damage(self.target,damage,self.game.player.get_damage_type(),self.combat),
             )
         self.combat.end_player_turn()
 
@@ -189,7 +189,11 @@ class CombatScene(Scene):
 
 
         if self.selected_skill is not None:
-            self.selected_skill.execute(self.target if self.selected_skill.is_targeted else self.game.player)
+            if not self.combat.game.player.mana >= self.selected_skill.cost:
+                self._change_log_text("Not enough mana")
+                return
+            self.selected_skill.execute(self.combat.game.player,self.target,self.combat)
+            self.combat.game.player.mana -= self.selected_skill.cost
             if self.selected_skill.skip_turn:
                 self.combat.end_player_turn()
 

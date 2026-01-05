@@ -11,11 +11,15 @@ class EffectEnum(str, Enum):
     AIMING = "aiming"
     RECKLESS = "reckless"
     STUNNED = "stunned"
+    DIVINE_SMITH = "divine_smith"
 
 class CancellableEvent(BaseModel):
     cancelled: bool = True
 
 class OnNewTurnResult(CancellableEvent):
+    pass
+
+class OnDieEvent(CancellableEvent):
     pass
 
 class EventResult(BaseModel):
@@ -41,6 +45,7 @@ class Effect(BaseModel):
     on_attacked: Optional[Callable[[object,bool,int], OnAttackEvent]] = None
     on_damaged: Optional[Callable[[object,int], OnAttackEvent]] = None
     on_new_turn: Optional[Callable[[object], OnNewTurnResult]] = None
+    on_die: Optional[Callable[[object,int],OnDieEvent]] = None
 
     class Config:
         arbitrary_types_allowed = True

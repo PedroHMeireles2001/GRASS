@@ -2,7 +2,7 @@ import random
 from typing import List, Dict, TYPE_CHECKING
 
 from src.model.attribs import CharacterAttrib, CharacterExpertise
-from src.model.classes import CharacterClass, get_initial_life
+from src.model.classes import CharacterClass
 from src.model.entity import Entity
 from src.model.skills import Skill
 
@@ -14,46 +14,60 @@ if TYPE_CHECKING:
 
 
 class Player(Entity):
-    def __init__(self, name: str, clazz: CharacterClass, race: "CharacterRace", attributes: Dict[CharacterAttrib, int],
+    def __init__(self, name: str, clazz: CharacterClass, race: "CharacterRace",attributes: Dict[CharacterAttrib, int],
                  skills: List[Skill],expertises: List[CharacterExpertise]):
+        self.race = race
+        self.attributes = sum_atrib(attributes, self.race)
         self.name = name
         self.gold = 0
         self.xp = 0
-        self.max_mana = 10
+        self.max_mana = clazz.get_initial_mana(attributes[CharacterAttrib.INTELLIGENCE])
         self.proficiency = 2
         self.mana = self.max_mana
         self.clazz = clazz
-        self.race = race
         self.skills = skills
-        self.attributes = sum_atrib(attributes,self.race)
         self.expertises = expertises
-        self.inventory:Dict["GenericItem",int] = {}
-        super().__init__(None, name, get_initial_life(clazz, attributes[CharacterAttrib.CONSTITUTION]), 0,
-                         10 + get_mod(attributes[CharacterAttrib.DEXTERITY]), 4)
+        self.inventory:Dict[int,int] = {}
+
+        super().__init__(image_str=None,
+                         attributes=self.attributes,
+                         name=name,
+                         base_damage=1,
+                         type=None,
+                         armor=0,
+                         dodge=10+get_mod(attributes[CharacterAttrib.DEXTERITY]),
+                         health=clazz.get_initial_life(self.attributes[CharacterAttrib.CONSTITUTION]),
+                         )
 
     def give_xp(self, xp):
         self.xp += xp
         #TODO: level
 
 
-    def give_item(self,item:"GenericItem",qnt:int):
-        if item in self.inventory.keys():
-            self.inventory[item] += qnt
+    def give_item(self,item_id:int,qnt:int):
+        if item_id in self.inventory.keys():
+            self.inventory[item_id] += qnt
         else:
-            self.inventory[item] = qnt
+            self.inventory[item_id] = qnt
 
-    def remove_item(self,item:"GenericItem",qnt:int,remove_if_dont_enough=True):
-        if item not in self.inventory.keys():
+    def has_item(self,item_id,qnt):
+        if not item_id in self.inventory.keys():
+            return False
+        else:
+            return self.inventory[item_id] >= qnt
+
+    def remove_item(self,item_id:int,qnt:int,remove_if_dont_enough=True):
+        if item_id not in self.inventory.keys():
             return False
 
-        if self.inventory[item] >= qnt:
-            self.inventory[item] -= qnt
-            if self.inventory[item] == 0:
-                del self.inventory[item]
+        if self.inventory[item_id] >= qnt:
+            self.inventory[item_id] -= qnt
+            if self.inventory[item_id] == 0:
+                del self.inventory[item_id]
             return True
         else:
             if remove_if_dont_enough:
-                del self.inventory[item]
+                del self.inventory[item_id]
             return False
 
     def sell_trash(self):
@@ -65,11 +79,9 @@ class Player(Entity):
         self.health = self.max_health
         self.mana = self.max_mana
 
-    def get_attack_mod(self):
-        return get_mod(self.attributes[CharacterAttrib.DEXTERITY])
 
-    def get_damage(self) -> float:
-        return self.base_damage + get_mod(self.attributes[CharacterAttrib.STRENGTH])
+
+
 
     def take_turn_impl(self, combat,skip):
         combat.player_turn = True
@@ -112,15 +124,14 @@ class Player(Entity):
         lines.append("")
 
         lines.append(f"{"## " if markdown else ""} Items")
-        for item in self.inventory.keys():
-            lines.append(f"- {item.name} x{self.inventory[item]}")
+        for idx,item in enumerate(self.inventory.keys()):
+            lines.append(f"{idx}) {item.name} x{self.inventory[item]}")
         # Skills
         lines.append(f"{"## ⚔️ " if markdown else ""} Skills")
 
-        for skill in self.skills:
-
+        for idx,skill in enumerate(self.skills):
             if skill:
-                lines.append(f"{"###" if markdown else ""} {skill.name}")
+                lines.append(f"{"###" if markdown else ""} {idx}) {skill.name}")
                 lines.append(f"- {"** Description:**" if markdown else " Description:"} {skill.description}")
 
         return "\n".join(lines)

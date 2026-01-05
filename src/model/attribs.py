@@ -1,3 +1,4 @@
+import random
 from enum import Enum
 
 
@@ -61,6 +62,31 @@ class CharacterExpertise(str, Enum):
         }
         return mapping.get(self.value, "None")
 
-# Usage Examples:
-# print(Expertise.SLEIGHT_OF_HAND.value) -> "Sleight of Hand"
-# print(Expertise.STEALTH.get_associated_ability()) -> "Dexterity"
+
+def roll_attribs(attribs=6):
+    rolls = []
+    for i in range(attribs):
+        dices = [random.randint(1, 6) for _ in range(4)]
+        dices = sorted(dices, reverse=True)
+        dices = dices[0:3]
+        rolls.append(sum(dices))
+    return rolls
+
+def random_attribs():
+    roll = roll_attribs()
+    return {
+            CharacterAttrib.STRENGTH: roll[0],
+            CharacterAttrib.DEXTERITY: roll[1],
+            CharacterAttrib.CONSTITUTION: roll[2],
+            CharacterAttrib.INTELLIGENCE: roll[3],
+            CharacterAttrib.WISDOM: roll[4],
+            CharacterAttrib.CHARISMA: roll[5],
+    }
+
+def fill_missing_attribs(initial_dict):
+    attribs = initial_dict
+    random_attribs_dict = random_attribs()
+    for attrib in CharacterAttrib:
+        if not attrib in initial_dict.keys():
+            attribs[attrib] = random_attribs_dict[attrib]
+    return attribs

@@ -5,7 +5,7 @@ from typing import Optional, List, Callable, Dict
 import pygame.image
 
 from src.model.effects import OnAttackEvent
-from src.model.entity import Entity
+from src.model.entity import Entity, DamageType
 from src.model.player import Player
 from src.utils import get_assets_path
 
@@ -19,22 +19,10 @@ class EquipSlot(str, Enum):
     RING = "ring"
 
 
-class Weapon(str, Enum):
-    SWORD = "sword",
-    DAGGER = "dagger",
-    BATTLEAXE = "battleaxe"
-    WHIP = "whip"
-
-
-class UsablesEnum(str, Enum):
-    SMALL_HEALING_POTION = "small_healing_potion"
-    HEALING_POTION = "healing_potion"
-    SMALL_BOMB = "small_bomb"
-    BOMB = "bomb"
-
 
 class GenericItem:
-    def __init__(self, name, description, value, useless, image=None):
+    def __init__(self,id, name, description, value, useless, image=None):
+        self.id = id
         self.name = name
         self.description = description
         self.value = value
@@ -93,28 +81,28 @@ class GenericWeapon(GenericEquip):
 
 
 class HealingPotion(Usable):
-    def __init__(self, potency):
+    def __init__(self, id, potency,value):
         self.potency = potency
-        super().__init__("Healing Potion", "heals 20 to player", value=50, skip_turn=False)
+        super().__init__("Healing Potion", "heals 20 to player", value=value, skip_turn=False)
 
     def _on_use(self, player, targets):
         player.heal(self.potency)
 
 
 class Bomb(Usable):
-    def __init__(self, potency):
+    def __init__(self, id,potency,value):
         self.potency = potency
-        super().__init__("Bomb", description="Give 10 damage to all enemies", value=50, skip_turn=True, area=True,
+        super().__init__("Bomb", description="Give 10 damage to all enemies", value=value, skip_turn=True, area=True,
                          self_use=False, on_use=self._on_use)
 
     def _on_use(self, player, targets: List[Entity]):
         for target in targets:
-            target.apply_damage(player, self.potency, None)
+            target.apply_damage(player, self.potency, DamageType.FIRE,None)
 
 
-USABLE_FACTORY:Dict[UsablesEnum,Usable] = {
-    UsablesEnum.SMALL_HEALING_POTION: HealingPotion(20),
-    UsablesEnum.HEALING_POTION: HealingPotion(50),
-    UsablesEnum.SMALL_BOMB: Bomb(5),
-    UsablesEnum.BOMB: Bomb(10)
+ITEMS = {
+    1:HealingPotion(1,20,25),
+    2:HealingPotion(2,50,50),
+    3:Bomb(3,5,25),
+    4:Bomb(4,10,50)
 }

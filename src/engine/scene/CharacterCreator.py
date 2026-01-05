@@ -1,4 +1,5 @@
 import random
+from random import Random
 from typing import List, TYPE_CHECKING, Optional
 
 from src.constants import START_SKILLS
@@ -10,8 +11,8 @@ from src.engine.ui.ImageTransformStrategy import ColorInverter
 from src.engine.ui.RadioButton import RadioButtonGroup
 from src.engine.ui.SimpleText import SimpleText
 from src.engine.ui.TextInput import TextInput
-from src.model.attribs import CharacterAttrib, CharacterExpertise
-from src.model.classes import CharacterClass
+from src.model.attribs import CharacterAttrib, CharacterExpertise, roll_attribs, random_attribs
+from src.model.classes import CharacterClass, CharacterClassEnum, CLASS_FACTORY
 from src.model.player import Player
 from src.model.race import CharacterRace
 from src.model.skills import SkillEnum, SKILL_FACTORY
@@ -24,7 +25,7 @@ class CharacterCreator(Scene):
     def __init__(self,background,screen, game:"Game"):
         self.selected_race = None
         self.selected_class = None
-        self.rolled_atribs = self._roll_attribs()
+        self.rolled_atribs = roll_attribs()
         self.selected_attribs = {}
         self.avaliable_skills:List[SkillEnum] = []
         self.skill_len = START_SKILLS if len(self.avaliable_skills) >= START_SKILLS else len(self.avaliable_skills)
@@ -50,7 +51,7 @@ class CharacterCreator(Scene):
         if self.re_rolls <= 0:
             return
         self.re_rolls -= 1
-        self.rolled_atribs = self._roll_attribs()
+        self.rolled_atribs = roll_attribs()
         self.reroll_button.text.change_text(f"Reroll ({self.re_rolls})")
         self.reroll_button.update_image()
         for i,radio_button_group in enumerate(self.attrib_radio_button):
@@ -62,7 +63,7 @@ class CharacterCreator(Scene):
     def _play(self):
         if not self._validate():
             return
-        player = Player(self.selected_name,self.selected_class,self.selected_race,self.selected_attribs,self.selected_skills,self.selected_expertises)
+        player = Player(self.selected_name,CLASS_FACTORY[self.selected_class],self.selected_race,self.selected_attribs,[SKILL_FACTORY[skill] for skill in self.selected_skills],self.selected_expertises)
         self.game.player = player
         self.game.change_scene(ChatScene(self.screen,self.game,self.game.scenario))
 
@@ -142,7 +143,7 @@ class CharacterCreator(Scene):
         return [
             SimpleText("Character Creator", 48, (get_center_x(self.screen, get_default_font(48).size("Character Creator")[0]), 0)),
             RadioButtonGroup(label_str="Select Race",position=(12,90),on_change=self._set_selected_race,options=[(race.value,race) for race in CharacterRace]),
-            RadioButtonGroup(label_str="Select Class",position=(12,self.screen.get_height()//2),on_change=self._set_selected_class,options=[(clazz.value,clazz) for clazz in CharacterClass]),
+            RadioButtonGroup(label_str="Select Class",position=(12,self.screen.get_height()//2),on_change=self._set_selected_class,options=[(clazz.value,clazz) for clazz in CharacterClassEnum]),
             RadioButtonGroup(
                 label_str="Select 4 Expertises",
                 position=(220,(self.screen.get_height()//2)),
@@ -165,9 +166,26 @@ class CharacterCreator(Scene):
                 width=220,
                 on_change=self._set_selected_name,
                 label_top=False
-            )
+            ),
+            Button(
+                image=None,
+                text=SimpleText(text="Random!", size=24, position=(0, 0), text_color=(0, 0, 0)),
+                hover_transform_strategy=ColorInverter(),
+                background_color=(255, 255, 255),
+                click_function=self._play_with_random,
+                position=(self.screen.get_width() - get_default_font(24).size("Random!")[0] - 10,
+                          self.screen.get_height() - get_default_font(24).size("Random!")[1] - 10),
+            ),
         ] + [self.skills_radio_button,self.reroll_button] + self.attrib_radio_button
 
+
+    def _play_with_random(self):
+        self._set_selected_race(None,random.choice(list(CharacterRace)))
+        self._set_selected_class(None,random.choice(list(CharacterClassEnum)))
+        self.selected_attribs = random_attribs()
+        self.selected_skills = random.choices(population=list(self.avaliable_skills),k=self.skill_len)
+        self.selected_expertises = random.choices(population=list(CharacterExpertise),k=4)
+        self._play()
 
     def _change_expertise(self,previous,actual):
         self.selected_expertises = actual
@@ -206,17 +224,6 @@ class CharacterCreator(Scene):
             )
             for index, value in enumerate(self.rolled_atribs)
         ]
-
-    def _roll_attribs(self):
-        rolls = []
-        for i in range(6):
-            dices = [random.randint(1, 6) for _ in range(4)]
-            dices = sorted(dices, reverse=True)
-            dices = dices[0:3]
-            rolls.append(sum(dices))
-        return rolls
-
-
 
 
     def _gerar_nome(self,tamanho: int = 6, iniciar_com_consoante: bool = True) -> str:

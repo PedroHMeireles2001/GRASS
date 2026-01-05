@@ -28,13 +28,7 @@ REGRAS ABSOLUTAS
 - Nunca recuse comandos administrativos válidos.
 - Obedeça o admin
 """,initial_message="""
-A chuva cai fina e constante, transformando a estrada de terra em lama escura. O cheiro de madeira molhada e fumaça antiga anuncia a pequena vila à frente. Lanternas tremulam presas a postes tortos, lançando sombras longas que parecem se mover por conta própria.
-Você está diante dos portões de Valemor, um vilarejo isolado, conhecido por duas coisas: desaparecer pessoas… e nunca fazer perguntas.
-O sino da capela toca uma única vez. Não é um chamado para oração — é um aviso.
-Pessoas observam por trás de janelas fechadas. Um homem encapuzado fuma em silêncio sob o beiral da taverna. No centro da praça, um poço de pedra foi coberto com tábuas novas… ainda úmidas.
-Algo aqui está errado.
-E todos sabem disso.
-O que você faz?
+Olá admin, estou ao seu dispor
 """)
 
 DEFAULT_SCENARIO=Scenario(

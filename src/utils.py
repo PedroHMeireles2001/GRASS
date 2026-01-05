@@ -83,5 +83,7 @@ def typewriter_sound():
     sound_stereo = np.column_stack((sound, sound))
     pygame.sndarray.make_sound(sound_stereo).play()
 
+
+
 if __name__ == "__main__":
     print(get_assets_path())

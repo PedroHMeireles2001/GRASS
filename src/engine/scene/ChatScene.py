@@ -1,4 +1,5 @@
 import queue
+import time
 from typing import List, Callable, Dict
 
 import pygame
@@ -12,6 +13,7 @@ from src.engine.ui.SimpleText import SimpleText
 from src.engine.ui.StaticImage import StaticImage
 from src.engine.ui.TextArea import TextAreaShow
 from src.engine.ui.TextInput import TextInput
+from src.model.Item import Usable
 from src.model.scenario import Scenario
 from src.utils import get_center_x, print_debug, get_default_font, typewriter_sound
 
@@ -56,6 +58,8 @@ class ChatScene(Scene):
         self.combat_button.visible = False
         self.combat_button.enabled = False
         self.eminent_combat = None
+        self.last_sound_time = 0
+        self.sound_cooldown = 0.08
         super().__init__(None, screen, game)
 
         self.loading = False
@@ -65,6 +69,7 @@ class ChatScene(Scene):
             "player": lambda args : self._put_text(f"\nSystem:\n{self.game.player.to_text(markdown=False)}"),
             "quit": lambda args: self._quit
         }
+
 
     def _get_player_attribute(self, args: List[str]):
         if len(args) <= 0:
@@ -123,11 +128,16 @@ class ChatScene(Scene):
         self.player_input.enabled = True
 
     def _put_text(self,text):
+        current_time = time.time()
         self.actual_text.text = self.actual_text.text + text
+
+        if current_time - self.last_sound_time > self.sound_cooldown:
+            typewriter_sound()
+            self.last_sound_time = current_time
 
 
     def _submit(self,text):
-        self.player_input.text.text = ""
+        self.player_input.text.change_text("")
         if text.startswith("/"):
             args = text.split(" ")
             if not args[0][1:] in self.commands.keys():
