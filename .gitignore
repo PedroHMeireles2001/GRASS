@@ -210,3 +210,4 @@ __marimo__/
 context_builder.py
 grass_context_minified.*
 .idea
+src/options.json

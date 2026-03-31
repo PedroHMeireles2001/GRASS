@@ -109,3 +109,10 @@ Sendo o código modular, é fácil adicionar novos conteúdos:
 * Adicione novos monstros em `src/model/monster.py`.
 * Crie novas raças ou classes explorando `src/model/race.py` e `classes.py`.
 * Expanda os utilitários de interface dentro de `src/engine/ui/`.
+
+## 🤝 Agradecimentos
+
+Um enorme obrigado a todos os que dedicam o seu tempo e talento para ajudar a construir e melhorar o **GRASS**.
+Um agradecimento muito especial aos nossos incríveis colaboradores por tornarem esta jornada melhor a cada linha de código:
+
+* [@Lincao-3D](https://github.com/Lincao-3D) - Obrigado pelas valiosas contribuições!
