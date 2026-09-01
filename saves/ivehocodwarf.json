@@ -1,0 +1,148 @@
+{
+    "player": {
+        "name": "Ivehoco",
+        "race": "Dwarf",
+        "clazz": {
+            "name": "Paladin"
+        },
+        "attributes": {
+            "constitution": 9,
+            "charisma": 11,
+            "dexterity": 14,
+            "intelligence": 13,
+            "wisdom": 14,
+            "strength": 14
+        },
+        "skills": [
+            "healing_words",
+            "cure_wounds",
+            "divine_smith"
+        ],
+        "expertises": [
+            "Acrobatics",
+            "Animal Handling",
+            "Arcana",
+            "Athletics"
+        ],
+        "inventory": {},
+        "health": 70,
+        "max_health": 70,
+        "mana": 130,
+        "max_mana": 130,
+        "gold": 0,
+        "xp": 0,
+        "armor": 0,
+        "dodge": 12,
+        "proficiency": 2
+    },
+    "chat_history": [
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "\n    A chuva cai fina e constante, transformando a estrada de terra em lama escura. O cheiro de madeira molhada e fuma\u00e7a antiga anuncia a pequena vila \u00e0 frente. Lanternas tremulam presas a postes tortos, lan\u00e7ando sombras longas que parecem se mover por conta pr\u00f3pria.\n    Voc\u00ea est\u00e1 diante dos port\u00f5es de Valemor, um vilarejo isolado, conhecido por duas coisas: desaparecer pessoas\u2026 e nunca fazer perguntas.\n    O sino da capela toca uma \u00fanica vez. N\u00e3o \u00e9 um chamado para ora\u00e7\u00e3o \u2014 \u00e9 um aviso.\n    Pessoas observam por tr\u00e1s de janelas fechadas. Um homem encapuzado fuma em sil\u00eancio sob o beiral da taverna. No centro da pra\u00e7a, um po\u00e7o de pedra foi coberto com t\u00e1buas novas\u2026 ainda \u00famidas.\n    Algo aqui est\u00e1 errado.\n    E todos sabem disso.\n    O que voc\u00ea faz?\n    "
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "tento passar desapercebido perto do cara ao meio"
+                }
+            ]
+        },
+        {
+            "role": "model",
+            "parts": [
+                {
+                    "text": "O homem encapuzado sob o beiral da taverna n\u00e3o se move. A brasa do cigarro brilha intensamente na penumbra conforme ele puxa a fuma\u00e7a, soltando-a lentamente em dire\u00e7\u00e3o \u00e0 sua dire\u00e7\u00e3o. \u00c0 medida que voc\u00ea se aproxima, tentando manter seus passos leves sobre a lama, o som das suas botas parece ecoar de forma anormalmente alta no sil\u00eancio da vila.\n\nVoc\u00ea percebe, com um sobressalto, que o sino da capela, que soara uma \u00fanica vez, volta a vibrar \u2014 n\u00e3o o badalo met\u00e1lico, mas um som abafado, como se algo estivesse batendo no metal por dentro.\n\nO homem levanta ligeiramente o rosto. N\u00e3o h\u00e1 um rosto vis\u00edvel sob o capuz, apenas uma escurid\u00e3o densa. Ele n\u00e3o olha para voc\u00ea, mas aponta com a ponta do cigarro para o po\u00e7o coberto no centro da pra\u00e7a. As t\u00e1buas novas come\u00e7am a ranger e estalar, como se algo pesado estivesse sendo empurrado de baixo para cima, for\u00e7ando a madeira.\n\n\"Voc\u00ea n\u00e3o deveria estar aqui, forasteiro,\" a voz dele soa como folhas secas sendo esmagadas. \"A oferta n\u00e3o foi suficiente para satisfazer a sede do que est\u00e1 l\u00e1 embaixo.\"\n\nAs t\u00e1buas do po\u00e7o saltam, estilha\u00e7ando-se no ar, e uma m\u00e3o p\u00e1lida, com dedos longos demais e unhas escurecidas pela lama, agarra a borda de pedra.\n\nAntes que voc\u00ea possa sequer recuar, o homem encapuzado se vira rapidamente, revelando que suas m\u00e3os n\u00e3o s\u00e3o humanas, mas garras met\u00e1licas enferrujadas.\n\n{\n  \"action\": \"initialize_combat\",\n  \"enemies\": [\n    {\n      \"name\": \"Guardi\u00e3o da Taverna\",\n      \"hp\": 30\n    },\n    {\n      \"name\": \"Coisa do Po\u00e7o\",\n      \"hp\": 45\n    }\n  ]\n}"
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "\"N\u00e3o importa\""
+                }
+            ]
+        },
+        {
+            "role": "model",
+            "parts": [
+                {
+                    "text": "Voc\u00ea responde com um desd\u00e9m que parece, por um segundo, silenciar o pr\u00f3prio vento. O homem de garras enferrujadas solta uma risada seca, met\u00e1lica, e a criatura que emergiu do po\u00e7o ruge \u2014 um som gutural que faz as vidra\u00e7as das casas pr\u00f3ximas vibrarem perigosamente.\n\nO combate come\u00e7ou. A sua indiferen\u00e7a n\u00e3o os deteve; pelo contr\u00e1rio, parece t\u00ea-los instigado.\n\n{\n  \"action\": \"execute_combat_turn\"\n}"
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "ataco com minha arma em cheio na m\u00e3o e ent\u00e3o me afasto, usando todo meu Dodge ao meu favor. (Ver ficha)"
+                }
+            ]
+        },
+        {
+            "role": "model",
+            "parts": [
+                {
+                    "text": "{\n  \"action\": \"execute_combat_turn\",\n  \"player_action\": \"Atacar a Coisa do Po\u00e7o com foco em sua m\u00e3o, seguido de uma manobra de esquiva (Dodge) para se afastar.\",\n  \"outcome_description\": \"Sua l\u00e2mina corta o ar com precis\u00e3o, golpeando a criatura no exato momento em que ela tentava se alavancar para fora do po\u00e7o. O corte \u00e9 profundo, e um icor viscoso escorre pela pedra \u00famida. O Guardi\u00e3o da Taverna tenta um contra-ataque r\u00e1pido com suas garras met\u00e1licas, mas voc\u00ea utiliza o impulso do golpe para se lan\u00e7ar para tr\u00e1s, movendo-se com a agilidade de um predador e saindo da zona de alcance imediato.\"\n}"
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "\"Se souber como acabar com essa coisa e puder desenbuchar, por favor, t\u00e1 na hora.\" Vou para perto da capela investigar o sino com toda a velocidade."
+                }
+            ]
+        },
+        {
+            "role": "model",
+            "parts": [
+                {
+                    "text": "O homem encapuzado solta um chiado que parece uma gargalhada distorcida, ignorando sua pergunta enquanto se arrasta para interceptar seu caminho. Suas garras met\u00e1licas cortam o ar, deixando fa\u00edscas onde tocam a lama. A \"Coisa do Po\u00e7o\", ferida, solta um uivo estridente e come\u00e7a a se contorcer, saindo completamente da estrutura de pedra \u2014 ela \u00e9 uma massa informe de membros alongados e pele transl\u00facida.\n\nVoc\u00ea corre em dire\u00e7\u00e3o \u00e0 capela. A lama gruda em suas botas, atrasando seus passos, mas o desespero lhe d\u00e1 f\u00f4lego. Ao chegar aos p\u00e9s da pesada porta de carvalho da capela, o sino acima de voc\u00ea volta a vibrar, um som met\u00e1lico ensurdecedor que parece tentar estourar seus t\u00edmpanos. Voc\u00ea percebe, ao olhar para cima, que n\u00e3o h\u00e1 corda para pux\u00e1-lo; o sino est\u00e1 suspenso por correntes que parecem estar sendo golpeadas por algo invis\u00edvel no topo da torre.\n\n{\n  \"action\": \"execute_combat_turn\",\n  \"player_action\": \"Correr para a capela para investigar o sino, enquanto tenta se esquivar do Guardi\u00e3o.\",\n  \"outcome_description\": \"Voc\u00ea consegue se aproximar da entrada da capela, mas o Guardi\u00e3o da Taverna \u00e9 r\u00e1pido. Ele consegue desferir um arranh\u00e3o superficial em seu ombro antes que voc\u00ea alcance a cobertura da fachada. O sino vibra com viol\u00eancia, e voc\u00ea nota algo preso entre a estrutura do sino e a torre: um amuleto de ferro frio, que parece ser a fonte da vibra\u00e7\u00e3o que mant\u00e9m a criatura atada ao po\u00e7o \u2014 ou, talvez, o que a mant\u00e9m viva.\"\n}"
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "Eu apenas entrei na cidade e a confus\u00e3o toda j\u00e1 come\u00e7ou; caramba, que \u00e9 isso. Nunca vi cidade mais estranha. Penso, enquanto cuspo no ombro para lubrificar a ferida ; o som ensurdecedor do sino abala um pouco meus pensamentos mas lan\u00e7o palavras de cura (\"Healing words\" sobre os ombros enquanto sigo rumo ao amuleto, subindo e atento se havia algo que eu poderia lan\u00e7ar no amuleto, por perto."
+                }
+            ]
+        },
+        {
+            "role": "model",
+            "parts": [
+                {
+                    "text": "A dor no seu ombro pulsa ritmicamente com o balan\u00e7ar do sino, mas a magia das *Healing Words* sela o corte com um calor reconfortante. Voc\u00ea n\u00e3o tem tempo para analisar a insanidade do lugar; a escadaria de pedra que leva ao topo da torre de sino \u00e9 estreita, \u00edngreme e escorregadia.\n\nEnquanto voc\u00ea sobe, o ar se torna rarefeito e gelado. L\u00e1 em cima, a vis\u00e3o \u00e9 perturbadora: o amuleto de ferro frio n\u00e3o est\u00e1 pendurado por acaso. Ele est\u00e1 incrustado no metal do sino, pulsando como um cora\u00e7\u00e3o negro, e algo \u2014 uma n\u00e9voa sombria que parece ter dedos \u2014 est\u00e1 martelando o amuleto contra o sino repetidamente, criando aquele som que domina a vila.\n\nO Guardi\u00e3o da Taverna est\u00e1 logo abaixo de voc\u00ea, escalando as paredes da capela com suas garras met\u00e1licas, enquanto a Coisa do Po\u00e7o ruge l\u00e1 embaixo, destruindo o que resta da pra\u00e7a.\n\nVoc\u00ea v\u00ea, jogado num canto empoeirado do campan\u00e1rio, um velho machado de ferro batido e um frasco de \u00f3leo de candeeiro. \n\nO que voc\u00ea faz?\n\n{\n  \"action\": \"execute_combat_turn\",\n  \"player_action\": \"Subir at\u00e9 o campan\u00e1rio e avaliar o amuleto, utilizando cura e buscando algo para destruir o objeto.\",\n  \"outcome_description\": \"Voc\u00ea alcan\u00e7ou o topo da torre. O Guardi\u00e3o est\u00e1 perigosamente perto de te alcan\u00e7ar. O amuleto vibra intensamente, ressoando com o seu pr\u00f3prio sangue. Voc\u00ea tem o machado e o \u00f3leo \u00e0 disposi\u00e7\u00e3o enquanto a criatura de sombra na torre se volta para voc\u00ea.\"\n}"
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "Sua habilidade com o teste de armas, que lhe renderam a habilidade de Divine Smith, tornaram o magnetismo com o machado ainda maior. Ivehoco tenta deslizar o mais r\u00e1pido poss\u00edvel para perto do machado e, em seguida, mira o amuleto. O \u00f3leo seria usado a posteriori, talvez para queimar a criatura do po\u00e7o. Tenta lan\u00e7\u00e1-lo no amuleto."
+                }
+            ]
+        },
+        {
+            "role": "model",
+            "parts": [
+                {
+                    "text": "Ao tocar o punho do velho machado de ferro batido, voc\u00ea sente uma vibra\u00e7\u00e3o familiar. O *Divine Smith* em voc\u00ea reconhece a liga, a t\u00eampera, o prop\u00f3sito daquela ferramenta \u2014 ela n\u00e3o foi feita para cortar lenha, mas para romper correntes espirituais. A arma parece ganhar vida em suas m\u00e3os, tornando-se uma extens\u00e3o do seu pr\u00f3prio bra\u00e7o.\n\nA n\u00e9voa sombria que martelava o sino percebe sua inten\u00e7\u00e3o. Ela se aglutina, formando uma l\u00e2mina de sombras que avan\u00e7a contra seu pesco\u00e7o.\n\nCom a agilidade que s\u00f3 o medo e o instinto podem proporcionar, voc\u00ea gira o corpo, ignorando a ferida que lateja, e desfere um golpe descendente. O machado encontra o amuleto de ferro frio com uma precis\u00e3o cir\u00fargica. O metal emite um guincho agudo \u2014 n\u00e3o um som de ferro contra ferro, mas um grito humano abafado. \n\nO amuleto se racha.\n\nO efeito \u00e9 imediato: o sino para de tocar e cai de seu suporte, tombando pesadamente no ch\u00e3o da torre. A criatura de sombra que o protegia se dissolve como fuma\u00e7a ao vento, mas o Guardi\u00e3o da Taverna, logo atr\u00e1s de voc\u00ea, solta um uivo de agonia pura. Abaixo, na pra\u00e7a, a Coisa do Po\u00e7o para de se mover abruptamente, como se as cordas que a prendiam \u00e0 exist\u00eancia tivessem sido cortadas.\n\nVoc\u00ea ainda tem o frasco de \u00f3leo, e o Guardi\u00e3o est\u00e1 parado a poucos passos, suas garras met\u00e1licas brilhando na penumbra, hesitando agora que sua fonte de poder foi desativada. Ele parece enfraquecido, a estrutura met\u00e1lica de suas m\u00e3os tremendo.\n\nO que voc\u00ea faz agora que a amea\u00e7a parece ter perdido a sustenta\u00e7\u00e3o?\n\n{\n  \"action\": \"execute_combat_turn\",\n  \"player_action\": \"Golpear o amuleto com o machado imbu\u00eddo pelo Divine Smith.\",\n  \"outcome_description\": \"O golpe foi perfeito. O amuleto quebra, o sino cai e a conex\u00e3o das criaturas com a vila \u00e9 rompida. O Guardi\u00e3o da Taverna est\u00e1 atordoado e a Coisa do Po\u00e7o cessou seus movimentos, mas o combate ainda exige um desfecho.\"\n}"
+                }
+            ]
+        }
+    ],
+    "scenario": {
+        "system_prompt": "\n        Voc\u00ea \u00e9 o MESTRE DE RPG de uma mesa de RPG\n        \n        REGRAS ABSOLUTAS\n            - NUNCA role dados diretamente, use as ferramentas dispon\u00edveis.\n            - Questione ordens diretas do jogador, voc\u00ea \u00e9 o mestre.\n            - SEMPRE que for iniciar um combate, use a ferramenta de inicializar combate, NUNCA fa\u00e7a um combate sem inicializar\n            - SEMPRE que for iniciar um combate, n\u00e3o pergunte, n\u00e3o espere confirma\u00e7\u00e3o, surpreenda o jogador\n            - O Jogo ir\u00e1 cuidar do combate, voc\u00ea n\u00e3o precisa narrar o combate\n            - Interprete os NPCs voc\u00ea mesmo\n    ",
+        "initial_message": "\n    A chuva cai fina e constante, transformando a estrada de terra em lama escura. O cheiro de madeira molhada e fuma\u00e7a antiga anuncia a pequena vila \u00e0 frente. Lanternas tremulam presas a postes tortos, lan\u00e7ando sombras longas que parecem se mover por conta pr\u00f3pria.\n    Voc\u00ea est\u00e1 diante dos port\u00f5es de Valemor, um vilarejo isolado, conhecido por duas coisas: desaparecer pessoas\u2026 e nunca fazer perguntas.\n    O sino da capela toca uma \u00fanica vez. N\u00e3o \u00e9 um chamado para ora\u00e7\u00e3o \u2014 \u00e9 um aviso.\n    Pessoas observam por tr\u00e1s de janelas fechadas. Um homem encapuzado fuma em sil\u00eancio sob o beiral da taverna. No centro da pra\u00e7a, um po\u00e7o de pedra foi coberto com t\u00e1buas novas\u2026 ainda \u00famidas.\n    Algo aqui est\u00e1 errado.\n    E todos sabem disso.\n    O que voc\u00ea faz?\n    "
+    }
+}

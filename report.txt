@@ -1,0 +1,34 @@
+GRASS Project: Refactoring Diagnostic Report
+Generated: Thu Aug 20 01:39:17 PM -03 2026
+
+P0 CRITICAL BUG FIXES (THREAD SAFETY)
+  ▸ ChatScene.py: AI Callback UI Mutations
+✓ PASS: queue.Queue imported in ChatScene.py
+✓ PASS: update() method appears to drain queue (thread-safe architecture)
+P1 GAMEPLAY & DICE WIRING FIXES
+  ▸ Skill Pipeline: raw_d20 Parameter Propagation
+✓ PASS: Skill class found
+✓ PASS: Skill.execute() accepts raw_d20 parameter
+⚠ WARN: Found 1 random.randint() calls in skills.py
+  ▸ CombatScene.py: Skill Roll Prompting & Physical Dice Awareness
+✓ PASS: Skill activation method found
+✓ PASS: physical_dice_enabled check detected in skill activation
+⚠ WARN: Physical d20 input references found; verify they're used in skill activation
+  ▸ ChatScene.py: Physical Dice Context Injection
+✓ PASS: Physical dice context detected in ChatScene
+✓ PASS: ChatScene.__init__() found
+✓ PASS: game object accessible in __init__()
+P2 UI LAYOUT & POLISH
+  ▸ CombatScene.py: Action Button Grid Offscreen Clipping
+✓ PASS: Button grid positioning function found
+✗ FAIL: CRITICAL: Found hardcoded screen.get_height() - 50 (likely offscreen)
+  ▸ CharacterCreator.py: Attributes Checklist Overflow
+✓ PASS: Attribute checklist function found
+✗ FAIL: CRITICAL: Found hardcoded y_offset = 641 (not resolution-aware)
+✓ PASS: Resolution-aware screen.get_*() calls detected
+  ▸ UI Components: CharacterSheetPanel & ASCIIBgPlayer Scaling
+✓ PASS: CharacterSheetPanel found in: src/engine/ui/CharacterSheetPanel.py
+⚠ WARN: Absolute geometry positioning detected in CharacterSheetPanel
+✓ PASS: ASCIIBgPlayer found in: src/engine/ui/ASCIIBgPlayer.py
+✓ PASS: No obvious absolute geometry in ASCIIBgPlayer
+SUMMARY DIAGNOSTIC REPORT COMPLETE

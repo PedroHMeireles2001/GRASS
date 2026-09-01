@@ -179,24 +179,31 @@ class Entity(Damageable):
     def get_spell_damage_mod(self):
         return get_mod(self.attributes[CharacterAttrib.INTELLIGENCE])
 
-    def attack(self,target,spell=False,spell_damage=0,spell_damage_type=DamageType.MAGICAL):
-        result = random.randint(1,20) + self.get_attack_mod(spell=spell)
+    def attack(self, target, spell=False, spell_damage=0, spell_damage_type=DamageType.MAGICAL, raw_d20: Optional[int] = None):
+        if raw_d20 is None:
+            raw_d20 = random.randint(1, 20)
+        else:
+            raw_d20 = max(1, min(20, int(raw_d20)))
+
+        attack_mod = self.get_attack_mod(spell=spell)
+        result = raw_d20 + attack_mod
+
         for effect in self.effects:
             if effect.on_attack:
-                result_event = effect.on_attack(self,target,result)
+                result_event = effect.on_attack(self, target, result)
                 if result_event.cancelled:
-                    return False,0,0
+                    return False, 0, 0
                 if result_event.new_result:
                     result = result_event.new_result
 
-        passed = result >= target.dodge or result == 20
+        passed = result >= target.dodge or raw_d20 == 20
 
-        result = target.attacked(self,passed,result)
-        passed = result >= target.dodge or result == 20
+        result = target.attacked(self, passed, result)
+        passed = result >= target.dodge or raw_d20 == 20
         damage = 0
         if passed:
             damage = (spell_damage + self.get_spell_damage_mod() if spell else self.get_damage()) * (
-                self.crit_multiplier if result == 20 else 1)
+                self.crit_multiplier if raw_d20 == 20 else 1)
             damage = target.calculate_damage(damage)
         return passed, result, damage
 

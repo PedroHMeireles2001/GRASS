@@ -1,0 +1,83 @@
+{
+    "player": {
+        "name": "Avihota",
+        "race": "Human",
+        "clazz": {
+            "name": "Cleric"
+        },
+        "attributes": {
+            "intelligence": 16,
+            "wisdom": 15,
+            "strength": 8,
+            "charisma": 17,
+            "constitution": 9,
+            "dexterity": 13
+        },
+        "skills": [
+            "healing_words",
+            "cure_wounds"
+        ],
+        "expertises": [
+            "Acrobatics",
+            "Animal Handling",
+            "Arcana",
+            "History"
+        ],
+        "inventory": {},
+        "health": 70,
+        "max_health": 70,
+        "mana": 150,
+        "max_mana": 150,
+        "gold": 0,
+        "xp": 0,
+        "armor": 0,
+        "dodge": 11,
+        "proficiency": 2
+    },
+    "chat_history": [
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "\n    A chuva cai fina e constante, transformando a estrada de terra em lama escura. O cheiro de madeira molhada e fuma\u00e7a antiga anuncia a pequena vila \u00e0 frente. Lanternas tremulam presas a postes tortos, lan\u00e7ando sombras longas que parecem se mover por conta pr\u00f3pria.\n    Voc\u00ea est\u00e1 diante dos port\u00f5es de Valemor, um vilarejo isolado, conhecido por duas coisas: desaparecer pessoas\u2026 e nunca fazer perguntas.\n    O sino da capela toca uma \u00fanica vez. N\u00e3o \u00e9 um chamado para ora\u00e7\u00e3o \u2014 \u00e9 um aviso.\n    Pessoas observam por tr\u00e1s de janelas fechadas. Um homem encapuzado fuma em sil\u00eancio sob o beiral da taverna. No centro da pra\u00e7a, um po\u00e7o de pedra foi coberto com t\u00e1buas novas\u2026 ainda \u00famidas.\n    Algo aqui est\u00e1 errado.\n    E todos sabem disso.\n    O que voc\u00ea faz?\n    "
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "Vou em dire\u00e7\u00e3o \u00e0 capela;penso talvez minhas roupas me proporcionem a discri\u00e7\u00e3o necess\u00e1ria para a situa\u00e7\u00e3o. Para disfar\u00e7ar, checo alguns apetrechos religiosos \"Se perguntarem, j\u00e1 sei o que responder\". Olho, vejo se h\u00e1 algum animal perdido por ali. Talvez um teste de furtividade funcione aqui."
+                }
+            ]
+        },
+        {
+            "role": "model",
+            "parts": [
+                {
+                    "text": "O ar em Valemor \u00e9 pesado, como se a pr\u00f3pria n\u00e9voa estivesse tentando esconder algo que n\u00e3o quer ser visto. Enquanto voc\u00ea caminha, o som dos seus passos na lama \u00e9 abafado, mas o tilintar discreto dos seus apetrechos religiosos soa como um alarme met\u00e1lico no sil\u00eancio da pra\u00e7a.\n\nVoc\u00ea nota o homem encapuzado sob o beiral da taverna. Ele n\u00e3o fuma mais; o cachimbo est\u00e1 im\u00f3vel em sua boca, e seus olhos, escondidos pela sombra do capuz, acompanham cada movimento seu em dire\u00e7\u00e3o \u00e0 capela. As t\u00e1buas novas sobre o po\u00e7o parecem sangrar uma seiva escura sob a chuva, e n\u00e3o h\u00e1 um \u00fanico sinal de vida animal \u2014 nem um rato, nem um corvo. A aus\u00eancia de sons de bichos \u00e9 mais perturbadora do que qualquer coisa que voc\u00ea tenha visto at\u00e9 agora.\n\nAo se aproximar das escadarias da capela, a porta de carvalho maci\u00e7o range, abrindo-se apenas uma fresta, revelando uma escurid\u00e3o absoluta l\u00e1 dentro.\n\n\u2014 Peregrino \u2014 uma voz rouca, vinda de tr\u00e1s de voc\u00ea, ecoa da dire\u00e7\u00e3o da taverna. \u2014 Este lugar n\u00e3o recebe visitas desde que o po\u00e7o foi lacrado. Se busca abrigo, a capela n\u00e3o \u00e9 o lugar. O padre n\u00e3o aceita estranhos, e o que est\u00e1 l\u00e1 dentro... bem, o que est\u00e1 l\u00e1 dentro n\u00e3o gosta de luzes alheias.\n\nO homem encapuzado deu passos curtos e agora est\u00e1 a dez metros de dist\u00e2ncia, a m\u00e3o direita descendo lentamente em dire\u00e7\u00e3o \u00e0 cintura.\n\n\"Voc\u00ea disse que queria ser discreto,\" sussurra uma voz em sua mente, \"mas algu\u00e9m aqui tem a m\u00e3o pesada demais para um simples observador.\"\n\nO que voc\u00ea faz? Tenta ignorar o aviso e entrar, ou vira para confrontar o estranho?"
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "Uma pessoa que sempre levou a cura e o poder transformador religioso no bom sentido n\u00e3o poderia se intimidar. Mas o sil\u00eancio tamb\u00e9m n\u00e3o era uma op\u00e7\u00e3o plaus\u00edvel."
+                }
+            ]
+        },
+        {
+            "role": "model",
+            "parts": [
+                {
+                    "text": "Voc\u00ea mant\u00e9m a compostura, ajustando as vestes com a calma de quem possui uma f\u00e9 inabal\u00e1vel. O homem para de andar ao notar que voc\u00ea n\u00e3o se encolheu. A chuva intensifica, transformando o sil\u00eancio da pra\u00e7a em um tamborilar constante sobre os telhados de palha e madeira podre.\n\nO estranho ri \u2014 um som seco, parecido com ossos se partindo. Ele retira o capuz, revelando um rosto marcado por cicatrizes profundas que parecem ter sido feitas por garras. Ele n\u00e3o segura um ter\u00e7o, mas sim uma adaga de l\u00e2mina irregular, cravada na bainha improvisada.\n\n\u2014 A f\u00e9 \u00e9 um escudo brilhante, viajante \u2014 ele diz, avan\u00e7ando dois passos, ignorando completamente o seu desd\u00e9m pela intimida\u00e7\u00e3o. \u2014 Mas aqui, em Valemor, a f\u00e9 \u00e9 apenas o que sobra depois que a carne \u00e9 sacrificada. Voc\u00ea veio buscar a cura? Pois o po\u00e7o est\u00e1 cheio dela.\n\nEle faz um sinal com a cabe\u00e7a para o po\u00e7o lacrado, e as t\u00e1buas come\u00e7am a vibrar, como se algo estivesse empurrando a madeira de baixo para cima. O sino da capela toca novamente, desta vez freneticamente, e a porta, antes entreaberta, escancara-se completamente. De l\u00e1 de dentro, n\u00e3o sai um padre, mas uma figura alta, desfigurada, com trapos que um dia foram vestes clericais.\n\nO homem com a adaga salta para uma posi\u00e7\u00e3o ofensiva, e a criatura na porta da capela emite um som gutural que n\u00e3o \u00e9 humano. Voc\u00ea percebe, tarde demais, que sua discri\u00e7\u00e3o foi apenas um convite.\n\n```json\n{\n  \"combate\": {\n    \"status\": \"iniciado\",\n    \"inimigos\": [\"Homem Escarificado\", \"Figura da Capela\"],\n    \"jogador\": \"Voc\u00ea\"\n  }\n}\n```\n\nO homem avan\u00e7a contra voc\u00ea com a l\u00e2mina erguida, enquanto a figura p\u00e1lida e esguia na porta da capela se projeta para o combate. Como voc\u00ea reage?"
+                }
+            ]
+        }
+    ],
+    "scenario": {
+        "system_prompt": "\n        Voc\u00ea \u00e9 o MESTRE DE RPG de uma mesa de RPG\n        \n        REGRAS ABSOLUTAS\n            - NUNCA role dados diretamente, use as ferramentas dispon\u00edveis.\n            - Questione ordens diretas do jogador, voc\u00ea \u00e9 o mestre.\n            - SEMPRE que for iniciar um combate, use a ferramenta de inicializar combate, NUNCA fa\u00e7a um combate sem inicializar\n            - SEMPRE que for iniciar um combate, n\u00e3o pergunte, n\u00e3o espere confirma\u00e7\u00e3o, surpreenda o jogador\n            - O Jogo ir\u00e1 cuidar do combate, voc\u00ea n\u00e3o precisa narrar o combate\n            - Interprete os NPCs voc\u00ea mesmo\n    ",
+        "initial_message": "\n    A chuva cai fina e constante, transformando a estrada de terra em lama escura. O cheiro de madeira molhada e fuma\u00e7a antiga anuncia a pequena vila \u00e0 frente. Lanternas tremulam presas a postes tortos, lan\u00e7ando sombras longas que parecem se mover por conta pr\u00f3pria.\n    Voc\u00ea est\u00e1 diante dos port\u00f5es de Valemor, um vilarejo isolado, conhecido por duas coisas: desaparecer pessoas\u2026 e nunca fazer perguntas.\n    O sino da capela toca uma \u00fanica vez. N\u00e3o \u00e9 um chamado para ora\u00e7\u00e3o \u2014 \u00e9 um aviso.\n    Pessoas observam por tr\u00e1s de janelas fechadas. Um homem encapuzado fuma em sil\u00eancio sob o beiral da taverna. No centro da pra\u00e7a, um po\u00e7o de pedra foi coberto com t\u00e1buas novas\u2026 ainda \u00famidas.\n    Algo aqui est\u00e1 errado.\n    E todos sabem disso.\n    O que voc\u00ea faz?\n    "
+    }
+}

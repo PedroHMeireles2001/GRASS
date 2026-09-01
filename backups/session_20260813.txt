@@ -1,0 +1,86 @@
+[18:52:16] PLAYER (Ivehoco): tento passar desapercebido perto do cara ao meio
+[18:52:20] DM: O homem encapuzado sob o beiral da taverna não se move. A brasa do cigarro brilha intensamente na penumbra conforme ele puxa a fumaça, soltando-a lentamente em direção à sua direção. À medida que você se aproxima, tentando manter seus passos leves sobre a lama, o som das suas botas parece ecoar de forma anormalmente alta no silêncio da vila.
+
+Você percebe, com um sobressalto, que o sino da capela, que soara uma única vez, volta a vibrar — não o badalo metálico, mas um som abafado, como se algo estivesse batendo no metal por dentro.
+
+O homem levanta ligeiramente o rosto. Não há um rosto visível sob o capuz, apenas uma escuridão densa. Ele não olha para você, mas aponta com a ponta do cigarro para o poço coberto no centro da praça. As tábuas novas começam a ranger e estalar, como se algo pesado estivesse sendo empurrado de baixo para cima, forçando a madeira.
+
+"Você não deveria estar aqui, forasteiro," a voz dele soa como folhas secas sendo esmagadas. "A oferta não foi suficiente para satisfazer a sede do que está lá embaixo."
+
+As tábuas do poço saltam, estilhaçando-se no ar, e uma mão pálida, com dedos longos demais e unhas escurecidas pela lama, agarra a borda de pedra.
+
+Antes que você possa sequer recuar, o homem encapuzado se vira rapidamente, revelando que suas mãos não são humanas, mas garras metálicas enferrujadas.
+
+{
+  "action": "initialize_combat",
+  "enemies": [
+    {
+      "name": "Guardião da Taverna",
+      "hp": 30
+    },
+    {
+      "name": "Coisa do Poço",
+      "hp": 45
+    }
+  ]
+}
+[18:54:03] PLAYER (Ivehoco): "Não importa"
+[18:54:05] DM: Você responde com um desdém que parece, por um segundo, silenciar o próprio vento. O homem de garras enferrujadas solta uma risada seca, metálica, e a criatura que emergiu do poço ruge — um som gutural que faz as vidraças das casas próximas vibrarem perigosamente.
+
+O combate começou. A sua indiferença não os deteve; pelo contrário, parece tê-los instigado.
+
+{
+  "action": "execute_combat_turn"
+}
+[18:54:52] PLAYER (Ivehoco): ataco com minha arma em cheio na mão e então me afasto, usando todo meu Dodge ao meu favor. (Ver ficha)
+[18:54:55] DM: {
+  "action": "execute_combat_turn",
+  "player_action": "Atacar a Coisa do Poço com foco em sua mão, seguido de uma manobra de esquiva (Dodge) para se afastar.",
+  "outcome_description": "Sua lâmina corta o ar com precisão, golpeando a criatura no exato momento em que ela tentava se alavancar para fora do poço. O corte é profundo, e um icor viscoso escorre pela pedra úmida. O Guardião da Taverna tenta um contra-ataque rápido com suas garras metálicas, mas você utiliza o impulso do golpe para se lançar para trás, movendo-se com a agilidade de um predador e saindo da zona de alcance imediato."
+}
+[18:56:43] PLAYER (Ivehoco): "Se souber como acabar com essa coisa e puder desenbuchar, por favor, tá na hora." Vou para perto da capela investigar o sino com toda a velocidade.
+[18:56:46] DM: O homem encapuzado solta um chiado que parece uma gargalhada distorcida, ignorando sua pergunta enquanto se arrasta para interceptar seu caminho. Suas garras metálicas cortam o ar, deixando faíscas onde tocam a lama. A "Coisa do Poço", ferida, solta um uivo estridente e começa a se contorcer, saindo completamente da estrutura de pedra — ela é uma massa informe de membros alongados e pele translúcida.
+
+Você corre em direção à capela. A lama gruda em suas botas, atrasando seus passos, mas o desespero lhe dá fôlego. Ao chegar aos pés da pesada porta de carvalho da capela, o sino acima de você volta a vibrar, um som metálico ensurdecedor que parece tentar estourar seus tímpanos. Você percebe, ao olhar para cima, que não há corda para puxá-lo; o sino está suspenso por correntes que parecem estar sendo golpeadas por algo invisível no topo da torre.
+
+{
+  "action": "execute_combat_turn",
+  "player_action": "Correr para a capela para investigar o sino, enquanto tenta se esquivar do Guardião.",
+  "outcome_description": "Você consegue se aproximar da entrada da capela, mas o Guardião da Taverna é rápido. Ele consegue desferir um arranhão superficial em seu ombro antes que você alcance a cobertura da fachada. O sino vibra com violência, e você nota algo preso entre a estrutura do sino e a torre: um amuleto de ferro frio, que parece ser a fonte da vibração que mantém a criatura atada ao poço — ou, talvez, o que a mantém viva."
+}
+[19:00:12] PLAYER (Ivehoco): Eu apenas entrei na cidade e a confusão toda já começou; caramba, que é isso. Nunca vi cidade mais estranha. Penso, enquanto cuspo no ombro para lubrificar a ferida ; o som ensurdecedor do sino abala um pouco meus pensamentos mas lanço palavras de cura ("Healing words" sobre os ombros enquanto sigo rumo ao amuleto, subindo e atento se havia algo que eu poderia lançar no amuleto, por perto.
+[19:00:15] DM: A dor no seu ombro pulsa ritmicamente com o balançar do sino, mas a magia das *Healing Words* sela o corte com um calor reconfortante. Você não tem tempo para analisar a insanidade do lugar; a escadaria de pedra que leva ao topo da torre de sino é estreita, íngreme e escorregadia.
+
+Enquanto você sobe, o ar se torna rarefeito e gelado. Lá em cima, a visão é perturbadora: o amuleto de ferro frio não está pendurado por acaso. Ele está incrustado no metal do sino, pulsando como um coração negro, e algo — uma névoa sombria que parece ter dedos — está martelando o amuleto contra o sino repetidamente, criando aquele som que domina a vila.
+
+O Guardião da Taverna está logo abaixo de você, escalando as paredes da capela com suas garras metálicas, enquanto a Coisa do Poço ruge lá embaixo, destruindo o que resta da praça.
+
+Você vê, jogado num canto empoeirado do campanário, um velho machado de ferro batido e um frasco de óleo de candeeiro. 
+
+O que você faz?
+
+{
+  "action": "execute_combat_turn",
+  "player_action": "Subir até o campanário e avaliar o amuleto, utilizando cura e buscando algo para destruir o objeto.",
+  "outcome_description": "Você alcançou o topo da torre. O Guardião está perigosamente perto de te alcançar. O amuleto vibra intensamente, ressoando com o seu próprio sangue. Você tem o machado e o óleo à disposição enquanto a criatura de sombra na torre se volta para você."
+}
+[19:04:47] PLAYER (Ivehoco): Sua habilidade com o teste de armas, que lhe renderam a habilidade de Divine Smith, tornaram o magnetismo com o machado ainda maior. Ivehoco tenta deslizar o mais rápido possível para perto do machado e, em seguida, mira o amuleto. O óleo seria usado a posteriori, talvez para queimar a criatura do poço. Tenta lançá-lo no amuleto.
+[19:04:50] DM: Ao tocar o punho do velho machado de ferro batido, você sente uma vibração familiar. O *Divine Smith* em você reconhece a liga, a têmpera, o propósito daquela ferramenta — ela não foi feita para cortar lenha, mas para romper correntes espirituais. A arma parece ganhar vida em suas mãos, tornando-se uma extensão do seu próprio braço.
+
+A névoa sombria que martelava o sino percebe sua intenção. Ela se aglutina, formando uma lâmina de sombras que avança contra seu pescoço.
+
+Com a agilidade que só o medo e o instinto podem proporcionar, você gira o corpo, ignorando a ferida que lateja, e desfere um golpe descendente. O machado encontra o amuleto de ferro frio com uma precisão cirúrgica. O metal emite um guincho agudo — não um som de ferro contra ferro, mas um grito humano abafado. 
+
+O amuleto se racha.
+
+O efeito é imediato: o sino para de tocar e cai de seu suporte, tombando pesadamente no chão da torre. A criatura de sombra que o protegia se dissolve como fumaça ao vento, mas o Guardião da Taverna, logo atrás de você, solta um uivo de agonia pura. Abaixo, na praça, a Coisa do Poço para de se mover abruptamente, como se as cordas que a prendiam à existência tivessem sido cortadas.
+
+Você ainda tem o frasco de óleo, e o Guardião está parado a poucos passos, suas garras metálicas brilhando na penumbra, hesitando agora que sua fonte de poder foi desativada. Ele parece enfraquecido, a estrutura metálica de suas mãos tremendo.
+
+O que você faz agora que a ameaça parece ter perdido a sustentação?
+
+{
+  "action": "execute_combat_turn",
+  "player_action": "Golpear o amuleto com o machado imbuído pelo Divine Smith.",
+  "outcome_description": "O golpe foi perfeito. O amuleto quebra, o sino cai e a conexão das criaturas com a vila é rompida. O Guardião da Taverna está atordoado e a Coisa do Poço cessou seus movimentos, mas o combate ainda exige um desfecho."
+}

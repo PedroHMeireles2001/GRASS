@@ -1,0 +1,32 @@
+[14:15:19] DM: Found items: {"inventory": {"1": 2}}
+
+[14:15:19] DM: [O Mestre permaneceu em silêncio...]
+[14:35:01] PLAYER (Siweqir): preparando "Accurate Attack", tento passar desapercebido, indo para perto das construções.
+[14:35:04] DM: O frio da chuva parece atravessar suas vestes, e o silêncio da vila é quase ensurdecedor, interrompido apenas pelo estalar da madeira úmida nas janelas que se fecham conforme você avança. As sombras nas paredes não são apenas ilusões ópticas; elas parecem se esticar na sua direção sempre que você passa por uma fonte de luz.
+
+O homem sob o beiral da taverna solta uma nuvem de fumaça cinzenta. Ele não olha para você, mas a mão dele repousa sobre algo escondido sob as dobras da capa — um cabo de lâmina, talvez.
+
+Você se mantém nas bordas, nas sombras das construções, tentando se misturar à penumbra. Para determinar se você consegue se mover sem chamar atenção indevida ou alertar os observadores ocultos sobre suas intenções, preciso que você faça um **teste de Furtividade**.
+
+**Role um dado de 20 faces (d20) e adicione seus modificadores de perícia, se houver.**
+
+Assim que tiver o resultado, me informe. Enquanto você se esgueira, nota que as tábuas novas sobre o poço no centro da praça estão arranhadas, como se algo tivesse tentado subir de lá de dentro... e não fosse humano.
+
+O que você faz com esse resultado? E pretende se aproximar da taverna ou contornar a praça em direção à capela?
+[14:37:58] PLAYER (Siweqir): dice_result: 12 - A agonia daquelas sombras faz Siweqir lembrar de que é apenas um ser humano, frágil, indefeso, mas astuto. E com sua astúcia, investiga se ainda possui algum item, armas ou algo que ali lhe possa ajudar naquela vila do desconhecido um pouco... assombrada.
+[14:38:01] DM: O resultado do seu teste é mediano, Siweqir. Você consegue se manter na penumbra, mas o ruído da lama sob suas botas parece amplificado pelo silêncio sepulcral da vila. O homem no beiral da taverna gira levemente o pescoço na sua direção, seus olhos estreitos por baixo do capuz, como se ele pudesse sentir o cheiro do seu medo ou a sua hesitação.
+
+Enquanto você se pressiona contra a parede fria de uma casa de estuque, você aproveita o momento para verificar seu equipamento. Sua mão tateia o cinto e a mochila, inventariando o que resta:
+
+*   **Adaga de Lâmina Curva:** Está presa à sua cintura, fria e confiável. O fio parece um pouco cego pela umidade.
+*   **Algibeira com ervas:** Algumas folhas secas de verbena, usadas para acalmar os nervos ou temperar carne.
+*   **Frasco de óleo de lamparina:** Metade cheio. O cheiro forte denuncia o conteúdo.
+*   **Pederneira e aço:** Íntimos amigos em noites como esta.
+
+Você sente a fragilidade do seu corpo, mas a adaga lhe confere um propósito. O homem no beiral, subitamente, joga o resto do cigarro na lama e começa a caminhar — não em direção a você, mas em direção ao poço coberto com as tábuas novas. Ele parece alheio à sua presença, ou talvez esteja apenas fingindo.
+
+Ele para diante do poço e começa a sussurrar algo, um murmúrio gutural que faz o ar ao seu redor vibrar. As sombras nas paredes, que antes pareciam estáticas, agora se alongam e se desconectam do solo, rastejando em direção ao homem.
+
+Você está escondido a poucos metros. Ele não percebeu você ainda, mas se ele continuar com o que quer que esteja fazendo, algo vai sair daquele poço. 
+
+**O que você faz?** Interrompe o ritual de forma furtiva, ataca diretamente, ou recua para tentar encontrar uma entrada pelos fundos da taverna para buscar aliados ou informações?

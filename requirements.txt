@@ -1,3 +1,4 @@
+# Core deps
 openai
 pydantic
 pygame
@@ -9,3 +10,7 @@ pyinstaller
 langchain-classic
 langchain-community
 langchain-openai
+google-generativeai
+
+# Optional: Only if you don't want to configure variables in the shell.
+# python-dotenv

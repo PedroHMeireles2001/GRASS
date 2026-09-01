@@ -186,6 +186,15 @@ class RadioButtonGroup(UIElement):
     def set_text(self, text:str):
         if self.label:
             self.label.change_text(text)
+    # In src/engine/ui/RadioButton.py (RadioButtonGroup class)
+    def set_selected(self, value):
+        """Programmatically select an option by value"""
+        for radio_btn in self.radio_buttons:
+            if radio_btn.value == value:
+                radio_btn.selected = True
+            else:
+                radio_btn.selected = False
+        self.selected_value = value
 
     def _calculate_rect(self) -> pygame.Rect:
         x, y = self.position

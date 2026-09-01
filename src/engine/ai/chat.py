@@ -1,104 +1,86 @@
-import random
+import os
 import threading
-from typing import Dict, Any
-from uuid import UUID
-
-import numpy as np
-import pygame
-from langchain_classic.agents import create_openai_tools_agent, AgentExecutor
-from langchain_classic.memory import ConversationBufferMemory
-from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_core.outputs import LLMResult
-
-from src.constants import DEBUG
-from src.engine.ai.tools import PlayerToolkit
-import queue
-from langchain_core.callbacks import BaseCallbackHandler
-from langchain_core.runnables import RunnableConfig
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.messages import HumanMessage, AIMessage
-
-from src.utils import typewriter_sound
-
-
-# Callback para capturar os tokens e jogar na Fila
-class TokenQueueHandler(BaseCallbackHandler):
-    def __init__(self, chat):
-        self.chat = chat
-
-    def on_llm_new_token(self, token: str, **kwargs) -> None:
-        self.chat.token_queue.put(token)
-
-    def on_tool_start(self, serialized: Dict[str, Any], input_str: str, **kwargs) -> None:
-        if DEBUG:
-            tool_name = serialized.get('name')
-            self.chat.token_queue.put(f"\n*[Sistema: Executando {tool_name}...]*\n")
+from google import genai  # Nova SDK
+import time
+from typing import List, Dict
 
 class Chat:
-
-
-    def __init__(self, gpt_model,api_key, system_prompt, initial_message, game):
+    def __init__(self, system_prompt: str, initial_message: str, api_key: str, game):
         self.game = game
-        self.player_toolkit = PlayerToolkit(game)
-        self.token_queue = queue.Queue()
+        
+        # --- API Key Resolution Logic ---
+        gemini_env = os.getenv("GEMINI_API_KEY")
+        google_env = os.getenv("GOOGLE_API_KEY")
 
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", system_prompt),
-            MessagesPlaceholder(variable_name="chat_history"),
-            ("human", "{input}"),
-            MessagesPlaceholder(variable_name="agent_scratchpad"),
-        ])
+        if gemini_env:
+            resolved_key = gemini_env
+            print("[INFO] Using GEMINI_API_KEY from environment variables.")
+        elif google_env:
+            resolved_key = google_env
+            print("[INFO] GEMINI_API_KEY not found. Falling back to GOOGLE_API_KEY.")
+        else:
+            resolved_key = api_key
+            print("[INFO] No API keys found in environment. Using fallback constructor key.")
 
-        # Note que removemos o callback fixo aqui para injetá-lo dinamicamente no submit,
-        # mas mantivemos streaming=True
-        llm = ChatOpenAI(
-            model=gpt_model,
-            temperature=1,
-            api_key=api_key,
-            streaming=True
-        )
+        # 1. Configuração do Cliente with prioritized key
+        self.client = genai.Client(api_key=resolved_key)
+        self.model_name = "gemini-3.1-flash-lite-preview"
+        self.system_prompt = system_prompt
+        
+        # 2. Atributos de estado que você já usava
+        self.history = []
+        self.token_queue = [] # Mantido para compatibilidade se necessário
+        self.is_generating = False
+        
+        # 3. Tratamento da mensagem inicial
+        if initial_message:
+            # Na nova SDK, apenas adicionamos ao histórico manual
+            self.history.append({"role": "user", "parts": [{"text": initial_message}]})
+            # Alimenta a fila de tokens se o seu TypewriterManager ainda ler daqui
+            for char in initial_message:
+                self.token_queue.append(char)
 
-        initial_history = ChatMessageHistory(
-            messages=[
-                HumanMessage(f"Player\n{self.game.player.to_text() if self.game.player else 'Default'}"),
-                AIMessage(initial_message)
-            ]
-        )
+    def send_message(self, text: str, callback=None):
+        """Envia a mensagem em uma thread para não travar o Pygame"""
+        if self.is_generating: return
+        self.is_generating = True
+        thread = threading.Thread(target=self._generate_response, args=(text, callback))
+        thread.start()
 
-        memory = ConversationBufferMemory(
-            chat_memory=initial_history,
-            memory_key="chat_history",
-            return_messages=True
-        )
+    def _generate_response(self, text: str, callback=None):
+        try:
+            # 4. Chamada da API usando a nova sintaxe
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=self.history + [{"role": "user", "parts": [{"text": text}]}],
+                config={'system_instruction': self.system_prompt}
+            )
+            
+            full_text = response.text
+            
+            # 5. Atualiza o histórico manualmente
+            self.history.append({"role": "user", "parts": [{"text": text}]})
+            self.history.append({"role": "model", "parts": [{"text": full_text}]})
+            
+            # Callback para a ChatScene (onde o TypewriterManager reside)
+            if callback:
+                callback(full_text)
+                
+            print(f"[DEBUG] API Gemini: {full_text[:50]}...")
+            
+        except Exception as e:
+            error_msg = f"[Erro na API: {str(e)}]"
+            print(f"[ERROR] {error_msg}")
+            if callback: callback(error_msg)
+        finally:
+            self.is_generating = False
 
-        agent = create_openai_tools_agent(llm, self.player_toolkit.get_tools(), prompt)
-        self.agent_executor = AgentExecutor(
-            agent=agent,
-            tools=self.player_toolkit.get_tools(),
-            memory=memory,
-            verbose=True
-        )
+    # --- FUNÇÕES QUE VOCÊ TINHA E NÃO PODEM SER PERDIDAS ---
 
-    def is_generating(self):
-        return not self.token_queue.empty()
+    def get_history_data(self) -> List[Dict]:
+        """Extrai o histórico para salvar em arquivo (JSON)"""
+        return self.history
 
-    def submit(self, text):
-        if self.is_generating():
-            return
-
-        stream_handler = TokenQueueHandler(self)
-
-        def run_agent():
-            try:
-                config = RunnableConfig(callbacks=[stream_handler])
-                self.agent_executor.invoke({"input": text}, config=config)
-
-            except Exception as e:
-                self.token_queue.put(f"[Erro: {e}]")
-
-        threading.Thread(target=run_agent, daemon=True).start()
-
-
-
-
+    def load_history_data(self, data: List[Dict]):
+        """Restaura o histórico salvou"""
+        self.history = data

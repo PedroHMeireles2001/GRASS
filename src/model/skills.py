@@ -1,6 +1,6 @@
 import random
 from enum import Enum
-from typing import List, Optional, Callable, TYPE_CHECKING
+from typing import List, Optional, Callable, TYPE_CHECKING, Any
 
 from pydantic import BaseModel
 
@@ -11,14 +11,14 @@ from src.model.effects import EffectEnum
 from src.model.entity import Entity, DamageType
 
 class SkillEnum(str, Enum):
-    ACCURATE_ATTACK = "accurate_shot",
-    RECKLESS_ATTACK = "reckless_attack",
-    MAGIC_MISSILE = "magic_missile",
-    GUIDED_MAGIC_MISSILE = "guided_magic_missile",
-    THUNDER_WAVE = "thunder_wave",
-    SLEEP_SONG = "sleep_song",
-    HEALING_WORDS = "healing_words",
-    CURE_WOUNDS = "cure_wounds",
+    ACCURATE_ATTACK = "accurate_shot"
+    RECKLESS_ATTACK = "reckless_attack"
+    MAGIC_MISSILE = "magic_missile"
+    GUIDED_MAGIC_MISSILE = "guided_magic_missile"
+    THUNDER_WAVE = "thunder_wave"
+    SLEEP_SONG = "sleep_song"
+    HEALING_WORDS = "healing_words"
+    CURE_WOUNDS = "cure_wounds"
     DIVINE_SMITH = "divine_smith"
 
 class Skill(BaseModel):
@@ -32,17 +32,25 @@ class Skill(BaseModel):
     is_targeted: bool = False
     skip_turn: bool = True
     passive: bool = False
-    execute: Optional[Callable[[Entity,Entity,Combat],None]] = None
+    execute_func: Optional[Callable] = None
+
+    def execute(self, player: Entity, target: Entity, combat: Optional[Combat] = None, raw_d20: Optional[int] = None):
+        """Executes the skill action, forwarding physical raw_d20 rolls when provided."""
+        if not self.execute_func:
+            return
+        import inspect
+        sig = inspect.signature(self.execute_func)
+        if "raw_d20" in sig.parameters or any(p.kind == inspect.Parameter.VAR_KEYWORD for p in sig.parameters.values()):
+            return self.execute_func(player, target, combat, raw_d20=raw_d20)
+        return self.execute_func(player, target, combat)
 
 
-
-
-def spell_attack(player,target,combat=None,damage=5,damage_type = DamageType.MAGICAL):
-    passed, result, final_damage = player.attack(target, spell=True, spell_damage=damage)
+def spell_attack(player, target, combat=None, damage=5, damage_type=DamageType.MAGICAL, raw_d20: Optional[int] = None):
+    passed, result, final_damage = player.attack(target, spell=True, spell_damage=damage, raw_d20=raw_d20)
     if passed:
         target.apply_damage(player, final_damage, damage_type, combat)
 
-def thunder_wave(player,target,combat:Combat):
+def thunder_wave(player, target, combat: Combat, raw_d20: Optional[int] = None):
     if not combat:
         return
 
@@ -54,41 +62,41 @@ def thunder_wave(player,target,combat:Combat):
         if result >= player.get_spell_difficult_class():
             damage = base_damage // 2
         else:
-            enemy.apply_effect(EffectEnum.STUNNED,1)
-        enemy.apply_damage(player,damage,DamageType.BLUDGEONING,combat)
+            enemy.apply_effect(EffectEnum.STUNNED, 1)
+        enemy.apply_damage(player, damage, DamageType.BLUDGEONING, combat)
 
-def attack(player,target,combat,extra_damage=0,extra_damage_type=None):
-    passed, result, damage = player.attack(target)
+def attack(player, target, combat, extra_damage=0, extra_damage_type=None, raw_d20: Optional[int] = None):
+    passed, result, damage = player.attack(target, raw_d20=raw_d20)
     if passed:
-        target.apply_damage(player,damage,player.get_damage_type(),combat)
+        target.apply_damage(player, damage, player.get_damage_type(), combat)
         if extra_damage > 0 and extra_damage_type:
-            target.apply_damage(player,extra_damage,extra_damage_type,combat)
+            target.apply_damage(player, extra_damage, extra_damage_type, combat)
 
-def sleep_sound(player,target,combat):
-    result = random.randint(1,10) + random.randint(1,10)
+def sleep_sound(player, target, combat, raw_d20: Optional[int] = None):
+    result = raw_d20 if raw_d20 is not None else (random.randint(1, 10) + random.randint(1, 10))
     if result >= target.health:
-        target.apply_effect(EffectEnum.STUNNED,10)
+        target.apply_effect(EffectEnum.STUNNED, 10)
 
 SKILL_FACTORY = {
     SkillEnum.ACCURATE_ATTACK: Skill(
         name="Accurate Attack",
         min_level=1,
         cost=0,
-        classes=[CharacterClassEnum.ROGUE,CharacterClassEnum.WARRIOR],
-        description="Skip you turn. your next attack has advantage",
+        classes=[CharacterClassEnum.ROGUE, CharacterClassEnum.WARRIOR],
+        description="Skip your turn. Your next attack has advantage",
         is_combat=True,
-        execute=lambda player,target,combat: player.apply_effect(EffectEnum.AIMING,1),
+        execute_func=lambda player, target, combat, raw_d20=None: player.apply_effect(EffectEnum.AIMING, 1),
         enum=SkillEnum.ACCURATE_ATTACK
     ),
-    SkillEnum.RECKLESS_ATTACK : Skill(
+    SkillEnum.RECKLESS_ATTACK: Skill(
         name="Reckless Attack",
         min_level=1,
         cost=0,
-        classes=[CharacterClassEnum.BARBARIAN,CharacterClassEnum.WARRIOR],
+        classes=[CharacterClassEnum.BARBARIAN, CharacterClassEnum.WARRIOR],
         description="Your next attack has advantage, but the enemies too",
         is_combat=True,
         skip_turn=False,
-        execute=lambda player,target,combat: player.apply_effect(EffectEnum.RECKLESS,1),
+        execute_func=lambda player, target, combat, raw_d20=None: player.apply_effect(EffectEnum.RECKLESS, 1),
         enum=SkillEnum.RECKLESS_ATTACK
     ),
     SkillEnum.MAGIC_MISSILE: Skill(
@@ -99,7 +107,7 @@ SKILL_FACTORY = {
         description="Make an attack roll against an enemy using the intelligence modifier, if you hit, deal 5 + intelligence modifier damage",
         is_combat=True,
         skip_turn=True,
-        execute=lambda player, target,combat: spell_attack(player, target,combat),
+        execute_func=lambda player, target, combat, raw_d20=None: spell_attack(player, target, combat, raw_d20=raw_d20),
         enum=SkillEnum.MAGIC_MISSILE
     ),
     SkillEnum.GUIDED_MAGIC_MISSILE: Skill(
@@ -110,30 +118,30 @@ SKILL_FACTORY = {
         description="Deal 1 + intelligence modifier damage without attack",
         is_combat=True,
         skip_turn=True,
-        execute=lambda player, target,combat: target.apply_damage(1+player.get_spell_damage_mod(),DamageType.MAGICAL,combat),
+        execute_func=lambda player, target, combat, raw_d20=None: target.apply_damage(1 + player.get_spell_damage_mod(), DamageType.MAGICAL, combat),
         enum=SkillEnum.GUIDED_MAGIC_MISSILE
     ),
     SkillEnum.HEALING_WORDS: Skill(
         name="Healing Words",
         min_level=1,
         cost=5,
-        classes=[CharacterClassEnum.BARD,CharacterClassEnum.CLERIC,CharacterClassEnum.PALADIN],
+        classes=[CharacterClassEnum.BARD, CharacterClassEnum.CLERIC, CharacterClassEnum.PALADIN],
         is_combat=True,
         description="Cure 20 + spell mod life",
-        execute=lambda player, target,combat: player.heal(20 + player.get_spell_damage_mod()),
+        execute_func=lambda player, target, combat, raw_d20=None: player.heal(20 + player.get_spell_damage_mod()),
         enum=SkillEnum.HEALING_WORDS
     ),
     SkillEnum.CURE_WOUNDS: Skill(
         name="Cure wounds",
         min_level=1,
         cost=10,
-        classes=[CharacterClassEnum.BARD,CharacterClassEnum.CLERIC,CharacterClassEnum.PALADIN,CharacterClassEnum.MAGE],
+        classes=[CharacterClassEnum.BARD, CharacterClassEnum.CLERIC, CharacterClassEnum.PALADIN, CharacterClassEnum.MAGE],
         is_combat=True,
         description="Cure 50 + spell mod life. Skips turn",
-        execute=lambda player, target,combat: player.heal(50 + player.get_spell_damage_mod()),
+        execute_func=lambda player, target, combat, raw_d20=None: player.heal(50 + player.get_spell_damage_mod()),
         enum=SkillEnum.CURE_WOUNDS
     ),
-    SkillEnum.DIVINE_SMITH:Skill(
+    SkillEnum.DIVINE_SMITH: Skill(
         name="Divine Smith",
         min_level=1,
         cost=10,
@@ -141,18 +149,18 @@ SKILL_FACTORY = {
         description="Attack and Give 5 sacred damage if pass",
         is_combat=True,
         skip_turn=True,
-        execute=lambda player,target,combat: attack(player, target, combat,extra_damage=5,extra_damage_type=DamageType.SACRED),
+        execute_func=lambda player, target, combat, raw_d20=None: attack(player, target, combat, extra_damage=5, extra_damage_type=DamageType.SACRED, raw_d20=raw_d20),
         enum=SkillEnum.DIVINE_SMITH
     ),
-    SkillEnum.THUNDER_WAVE : Skill(
+    SkillEnum.THUNDER_WAVE: Skill(
         name="Thunder Wave",
         min_level=1,
         cost=10,
-        classes=[CharacterClassEnum.MAGE,CharacterClassEnum.BARD],
-        description="deal 5 + intelligence modifier damage to all enemies. everyone makes a constitution test, if they fail, they are stunned, if pass, take half of damage",
+        classes=[CharacterClassEnum.MAGE, CharacterClassEnum.BARD],
+        description="Deal 5 + intelligence modifier damage to all enemies. Everyone makes a constitution test, if they fail, they are stunned, if pass, take half of damage",
         is_combat=True,
         skip_turn=True,
-        execute=thunder_wave,
+        execute_func=thunder_wave,
         enum=SkillEnum.THUNDER_WAVE
     ),
     SkillEnum.SLEEP_SONG: Skill(
@@ -160,9 +168,8 @@ SKILL_FACTORY = {
         min_level=1,
         cost=10,
         classes=[CharacterClassEnum.BARD],
-        description="roll two d10s, if the result is greater than or equal to the target's total health, they will be stunned for 10 rounds",
-        execute=sleep_sound,
+        description="Roll two d10s, if the result is greater than or equal to the target's total health, they will be stunned for 10 rounds",
+        execute_func=sleep_sound,
         enum=SkillEnum.SLEEP_SONG
     )
 }
-

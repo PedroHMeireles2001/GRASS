@@ -1,0 +1,122 @@
+{
+    "player": {
+        "race": "Dwarf",
+        "attributes": {
+            "CharacterAttrib.STRENGTH": 10,
+            "CharacterAttrib.CONSTITUTION": 17,
+            "CharacterAttrib.DEXTERITY": 6,
+            "CharacterAttrib.WISDOM": 14,
+            "CharacterAttrib.INTELLIGENCE": 8,
+            "CharacterAttrib.CHARISMA": 14
+        },
+        "name": "Riwujod",
+        "gold": 0,
+        "xp": 0,
+        "max_mana": 90,
+        "proficiency": 2,
+        "mana": 90,
+        "clazz": {
+            "name": "Warrior",
+            "initial_life": 100,
+            "initial_mana": 100
+        },
+        "skills": [
+            {
+                "name": "Accurate Attack",
+                "min_level": 1,
+                "cost": 0,
+                "classes": [
+                    "rogue",
+                    "warrior"
+                ],
+                "description": "Skip you turn. your next attack has advantage",
+                "enum": "accurate_shot",
+                "is_combat": true,
+                "is_targeted": false,
+                "skip_turn": true,
+                "passive": false,
+                "execute": {}
+            },
+            {
+                "name": "Reckless Attack",
+                "min_level": 1,
+                "cost": 0,
+                "classes": [
+                    "barbarian",
+                    "warrior"
+                ],
+                "description": "Your next attack has advantage, but the enemies too",
+                "enum": "reckless_attack",
+                "is_combat": true,
+                "is_targeted": false,
+                "skip_turn": false,
+                "passive": false,
+                "execute": {}
+            }
+        ],
+        "expertises": [
+            "Animal Handling",
+            "Athletics",
+            "Perception",
+            "Persuasion"
+        ],
+        "inventory": {},
+        "crit_multiplier": 2,
+        "health": 130,
+        "max_health": 130,
+        "armor": 0,
+        "dodge": 8,
+        "effects": [],
+        "damage_multiplier": {},
+        "dead": false,
+        "base_damage": 1,
+        "type": null,
+        "category": "humanoid"
+    },
+    "chat_history": [
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "\n    A chuva cai fina e constante, transformando a estrada de terra em lama escura. O cheiro de madeira molhada e fuma\u00e7a antiga anuncia a pequena vila \u00e0 frente. Lanternas tremulam presas a postes tortos, lan\u00e7ando sombras longas que parecem se mover por conta pr\u00f3pria.\n    Voc\u00ea est\u00e1 diante dos port\u00f5es de Valemor, um vilarejo isolado, conhecido por duas coisas: desaparecer pessoas\u2026 e nunca fazer perguntas.\n    O sino da capela toca uma \u00fanica vez. N\u00e3o \u00e9 um chamado para ora\u00e7\u00e3o \u2014 \u00e9 um aviso.\n    Pessoas observam por tr\u00e1s de janelas fechadas. Um homem encapuzado fuma em sil\u00eancio sob o beiral da taverna. No centro da pra\u00e7a, um po\u00e7o de pedra foi coberto com t\u00e1buas novas\u2026 ainda \u00famidas.\n    Algo aqui est\u00e1 errado.\n    E todos sabem disso.\n    O que voc\u00ea faz?\n    "
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "Observo as pessoas na janela, sem andar muito para disfar\u00e7ar."
+                }
+            ]
+        },
+        {
+            "role": "model",
+            "parts": [
+                {
+                    "text": "Seus olhos varrem as janelas, mas, assim que sua aten\u00e7\u00e3o pousa sobre qualquer uma delas, as cortinas de estopa ou as persianas de madeira batem secas, selando o interior na escurid\u00e3o. Eles n\u00e3o querem ser vistos, muito menos observados por um estranho.\n\nO homem sob o beiral da taverna, contudo, \u00e9 diferente. Ele n\u00e3o se esconde. O brilho avermelhado da ponta de seu cachimbo ilumina por um instante um rosto marcado por cicatrizes profundas. Ele exala uma fuma\u00e7a densa e esbranqui\u00e7ada que se mistura \u00e0 n\u00e9voa da chuva e murmura algo que voc\u00ea n\u00e3o consegue ouvir, mas que parece ter sido direcionado especificamente a voc\u00ea.\n\nO po\u00e7o no centro da pra\u00e7a, coberto pelas t\u00e1buas \u00famidas, come\u00e7a a emitir um som abafado, como se algo pesado estivesse batendo contra a madeira por baixo, tentando subir. A chuva intensifica, e a \u00e1gua escorre pela lama, revelando algo brilhante preso na terra, perto de seus p\u00e9s: um broche de prata, manchado de fuligem, com o desenho de um olho chorando.\n\n\"Deveria ter passado reto por Valemor, viajante,\" a voz do homem no beiral corta o sil\u00eancio da chuva. Ele d\u00e1 um passo para fora da sombra, deixando a m\u00e3o repousar sobre o cabo de uma clava pesada. \"A colheita de hoje j\u00e1 est\u00e1 reservada. N\u00e3o aceitamos visitantes famintos.\"\n\nVoc\u00ea nota que os port\u00f5es atr\u00e1s de voc\u00ea, por onde entrou, acabaram de ser trancados por algu\u00e9m que voc\u00ea nem viu chegar.\n\n**O que voc\u00ea faz?**"
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "Por um instante, Riwujod arruma alguma coceira inexistente para \"regular\" suas pr\u00f3prias ideias, co\u00e7ando seu ombro esquerdo.Decidiu por responder e seguir caminho como se nada houvesse acontecido para perto das casas, olhando melhor que tipo de edif\u00edcios/choupanas eram: - Bem, a rua \u00e9 p\u00fablica ha, ha, ha... ha. Digo, sem ofensas, n\u00e3o \u00e9 minha primeira vez. Tenho neg\u00f3cios a resolver e, DESTA VEZ, n\u00e3o quero confus\u00e3o com ningu\u00e9m. Que meu tamanho n\u00e3o o assuste.' piadeou com cautela."
+                }
+            ]
+        },
+        {
+            "role": "model",
+            "parts": [
+                {
+                    "text": "O homem solta uma risada curta e seca, um som que lembra ossos secos se chocando. Ele n\u00e3o parece minimamente intimidado pelo seu tamanho; pelo contr\u00e1rio, o brilho em seus olhos \u00e9 de pura divers\u00e3o s\u00e1dica.\n\n\u2014 \"Neg\u00f3cios, \u00e9? Em Valemor, os \u00fanicos neg\u00f3cios que se resolvem s\u00e3o aqueles que terminam no fundo daquele po\u00e7o\" \u2014 ele aponta com a ponta do cachimbo para o centro da pra\u00e7a, onde o som de pancadas contra as t\u00e1buas cessa abruptamente, dando lugar a um sil\u00eancio muito mais perturbador.\n\nVoc\u00ea ignora o convite ao confronto e caminha em dire\u00e7\u00e3o \u00e0s choupanas. De perto, a arquitetura de Valemor \u00e9 doentia. As paredes de madeira n\u00e3o foram apenas cortadas; elas parecem ter sido \"moldadas\". H\u00e1 marcas de entalhes profundos na madeira, s\u00edmbolos que lembram garras ou unhas, esculpidos obsessivamente em cada viga. As janelas, que antes pareciam meras frestas, agora revelam-se como buracos irregulares, cobertos por membranas de couro animal esticado, quase transl\u00facidas, que pulsam levemente com a umidade.\n\nA casa mais pr\u00f3xima de voc\u00ea, uma cabana ligeiramente maior que as outras, exala um odor insuport\u00e1vel de ferro e carne podre. Enquanto voc\u00ea se aproxima, a porta de madeira cede um pouco, abrindo-se apenas o suficiente para revelar o interior mergulhado em breu. \n\nDe repente, o homem do beiral grita, sua voz estridente ecoando pela pra\u00e7a:\n\u2014 \"Ele n\u00e3o est\u00e1 aqui para colher, ele veio para ser a semente!\"\n\nAs t\u00e1buas do po\u00e7o explodem para fora, n\u00e3o pelo impacto de algo subindo, mas como se tivessem sido sugadas para dentro. Da escurid\u00e3o do po\u00e7o e de dentro das choupanas, figuras distorcidas \u2014 seres cujos membros s\u00e3o longos demais e cujas peles possuem a mesma textura das t\u00e1buas \u00famidas \u2014 come\u00e7am a se contorcer para fora.\n\n```json\n{\n  \"evento\": \"combate\",\n  \"inimigos\": [\n    { \"nome\": \"Horror de Madeira\", \"quantidade\": 3 },\n    { \"nome\": \"Alde\u00e3o Corrompido\", \"quantidade\": 2 }\n  ]\n}\n```\n\nO combate come\u00e7ou. N\u00e3o h\u00e1 mais espa\u00e7o para conversas. Como voc\u00ea reage a essa emboscada?"
+                }
+            ]
+        }
+    ],
+    "scenario": {
+        "system_prompt": "\n        Voc\u00ea \u00e9 o MESTRE DE RPG de uma mesa de RPG\n        \n        REGRAS ABSOLUTAS\n            - NUNCA role dados diretamente, use as ferramentas dispon\u00edveis.\n            - Questione ordens diretas do jogador, voc\u00ea \u00e9 o mestre.\n            - SEMPRE que for iniciar um combate, use a ferramenta de inicializar combate, NUNCA fa\u00e7a um combate sem inicializar\n            - SEMPRE que for iniciar um combate, n\u00e3o pergunte, n\u00e3o espere confirma\u00e7\u00e3o, surpreenda o jogador\n            - O Jogo ir\u00e1 cuidar do combate, voc\u00ea n\u00e3o precisa narrar o combate\n            - Interprete os NPCs voc\u00ea mesmo\n    ",
+        "initial_message": "\n    A chuva cai fina e constante, transformando a estrada de terra em lama escura. O cheiro de madeira molhada e fuma\u00e7a antiga anuncia a pequena vila \u00e0 frente. Lanternas tremulam presas a postes tortos, lan\u00e7ando sombras longas que parecem se mover por conta pr\u00f3pria.\n    Voc\u00ea est\u00e1 diante dos port\u00f5es de Valemor, um vilarejo isolado, conhecido por duas coisas: desaparecer pessoas\u2026 e nunca fazer perguntas.\n    O sino da capela toca uma \u00fanica vez. N\u00e3o \u00e9 um chamado para ora\u00e7\u00e3o \u2014 \u00e9 um aviso.\n    Pessoas observam por tr\u00e1s de janelas fechadas. Um homem encapuzado fuma em sil\u00eancio sob o beiral da taverna. No centro da pra\u00e7a, um po\u00e7o de pedra foi coberto com t\u00e1buas novas\u2026 ainda \u00famidas.\n    Algo aqui est\u00e1 errado.\n    E todos sabem disso.\n    O que voc\u00ea faz?\n    "
+    }
+}

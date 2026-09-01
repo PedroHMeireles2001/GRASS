@@ -1,0 +1,57 @@
+Este é um **Prompt de Agente Sênior** desenhado para instruir uma LLM (como GPT-4o ou Claude 3.5 Sonnet) a realizar a refatoração completa do seu *core* de sistema, transitando de um RPG de fantasia medieval para um RPG de ficção científica determinista, inspirado na *Fundação* de Asimov.
+
+---
+
+### O Prompt do Arquiteto (Copie e cole isto)
+
+**Contexto:** Você é um Arquiteto de Software Sênior especializado em RPGs e sistemas complexos. O objetivo é refatorar o motor de um RPG em Python (`src/model/`) para suportar a ambientação de "Entropia", uma crônica futurista baseada nos conceitos de Asimov.
+
+**A Ambientação:** O mundo é regido pela "Psico-história" — a matemática das massas. O coletivo "Entropia" atua como uma variável de ruído, tentando desviar a humanidade do determinismo da "Longa Noite". O sistema deve refletir: tecnologia avançada, cálculos probabilísticos e a tensão entre o indivíduo e a probabilidade de grandes grupos.
+
+**Diretrizes de Refatoração:**
+
+1.  **Abstração de "Entidade" (entity.py):**
+    *   Substitua o conceito de `DamageType` (fogo/gelo) por tipos energéticos e vetoriais: `KINETIC`, `THERMAL`, `IONIC`, `PSIONIC`, `NULL`.
+    *   Substitua `EntityCategory` por `SocialAlignment` (ex: `PSICOHISTORIAN`, `TECHNOCRAT`, `ENTROPIST`, `FACTIONLESS`).
+    *   Substitua `Armor` por `ShieldIntegrity` e `Dodge` por `PredictionProbability` (a chance de prever e evitar um ataque via algoritmo).
+
+2.  **Sistema de Atributos (attribs.py):**
+    *   Os atributos devem deixar de ser medievais. Utilize:
+        *   `COMPUTATION` (Intelecto lógico)
+        *   `CALCULATION` (Precisão de tiro/vetores)
+        *   `INFLUENCE` (Manipulação de massa/psicohistória)
+        *   `RESILIENCE` (Integridade biológica/cibernética)
+        *   `SYNC` (Sintonia com a rede ou habilidades psi)
+    *   A função `roll_attribs` deve ser renomeada para `calculate_variance` e seguir uma distribuição normal (Gaussian) em vez de 4d6.
+
+3.  **Skills e Combate (skills.py e combat.py):**
+    *   Renomeie `Skill` para `Directive`. As habilidades não são "magias", mas "Protocolos".
+    *   `Magic Missile` torna-se `VectorOverride`. `Healing Words` torna-se `CellularNaniteInjection`.
+    *   O combate não deve ser sobre "iniciativa", mas sobre "Latência". A entidade com a menor latência de rede/processamento age primeiro.
+
+4.  **Sistema de Efeitos (effects.py):**
+    *   Efeitos de "Stunned" tornam-se `BUFFER_OVERFLOW` ou `LATENCY_SPIKE`.
+    *   Adicione o efeito `ENTROPIC_INTERFERENCE`: aumenta a aleatoriedade (variance) das jogadas de ataque dos inimigos.
+
+5.  **Refatoração de Código (Clean Code):**
+    *   Substitua `Damageable` por `SystemComponent`.
+    *   Elimine referências a "Gold" e utilize `CREDITS` ou `RESOURCE_NODES`.
+    *   Garanta que a serialização `to_dict` e `from_dict` em `player.py` seja resiliente a esta mudança de nomenclatura.
+
+**Tarefas:**
+1. Apresente o plano de mudança para cada arquivo mencionado.
+2. Aplique a reescrita técnica das classes base.
+3. Certifique-se de que o sistema de "Psico-história" seja incorporado como um modificador global (uma flag ou parâmetro no `Combat`) que altera o comportamento dos inimigos com base no alinhamento da facção.
+
+**Restrições:**
+*   Mantenha a estrutura de `Enum` e `Pydantic` modelos.
+*   Priorize a manutenibilidade e a clareza do código sobre a economia de caracteres.
+*   Não altere a lógica fundamental de `pygame` (se necessário), apenas os componentes de dados que ela consome.
+
+---
+
+### Dicas adicionais para você:
+
+*   **Por que este prompt funciona?** Ele força a LLM a entender não apenas a *sintaxe* (o código), mas a *semântica* do novo universo (a filosofia de Asimov). Ao pedir para substituir `Armor` por `ShieldIntegrity`, você está guiando a IA a refletir a estética do seu jogo.
+*   **A abordagem do Agente:** Ao pedir a "apresentação do plano de mudança", você garante que a IA não vá "alucinar" ou pular etapas cruciais da refatoração. Você pode, inclusive, rodar esse prompt em partes, focando em um ou dois arquivos por vez se o limite de tokens da IA for atingido.
+*   **Próximo Passo:** Se você deseja que ela crie os novos `SYSTEM_PROMPT` no arquivo `scenario.py`, peça explicitamente para ela escrever a "lore" da entropia nos prompts de sistema, baseando-se no conceito de que o jogador está tentando "quebrar a linha do tempo estática".
